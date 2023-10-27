@@ -4,9 +4,9 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 # Set a working directory in the container
 WORKDIR /publish
 
-COPY . Portfolio.Authorization.Service
-COPY ../Portfolio.Migration Portfolio.Migration
-COPY ../Portfolio.Domain.Core Portfolio.Domain.Core
+COPY src/Portfolio.Authorization.Service Portfolio.Authorization.Service
+COPY src/Portfolio.Migration Portfolio.Migration
+COPY src/Portfolio.Domain.Core Portfolio.Domain.Core
 
 RUN dotnet publish "./Portfolio.Authorization.Service/Portfolio.Authorization.Service.csproj" -c release -o out
 
