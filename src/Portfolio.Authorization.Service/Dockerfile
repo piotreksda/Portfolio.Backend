@@ -10,6 +10,8 @@ COPY src/Portfolio.Domain.Core Portfolio.Domain.Core
 
 RUN dotnet publish "./Portfolio.Authorization.Service/Portfolio.Authorization.Service.csproj" -c release -o out
 
+RUN dotnet dev-certs https
+
 # Use a smaller runtime image for the final image
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
 
