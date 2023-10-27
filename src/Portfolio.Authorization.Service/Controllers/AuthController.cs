@@ -7,6 +7,8 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Portfolio.Authorization.Service.Controllers;
 
+[Route("api")]
+[ApiController]
 public class AuthController: ControllerBase
 {
     private readonly IConfiguration _configuration;

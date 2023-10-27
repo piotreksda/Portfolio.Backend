@@ -20,7 +20,7 @@ WORKDIR /app
 COPY --from=build /publish/out .
 COPY --from=build /publish/Portfolio.Migration /Portfolio.Migration
 
-ENV ASPNETCORE_URLS http://*:5000
+ENV ASPNETCORE_URLS https://*:5000
 
 # Expose the port your application listens on (adjust as needed)
 EXPOSE 5000
