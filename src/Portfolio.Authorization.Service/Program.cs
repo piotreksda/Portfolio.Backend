@@ -18,7 +18,11 @@ builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddDistributedMemoryCache();
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
+
+app.MapHealthChecks("/healthz");
 
 if (app.Environment.IsDevelopment())
 {
