@@ -21,6 +21,7 @@ WORKDIR /app
 # Copy the published application from the build environment
 COPY --from=build /publish/out .
 COPY --from=build /publish/Portfolio.Migration /Portfolio.Migration
+COPY --from=build /root/.dotnet/corefx/cryptography/x509stores/my/* /root/.dotnet/corefx/cryptography/x509stores/my/
 
 ENV ASPNETCORE_URLS https://*:5000
 
