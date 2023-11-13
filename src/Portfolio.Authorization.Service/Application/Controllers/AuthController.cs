@@ -41,7 +41,7 @@ public class AuthController : ControllerBase
     [HttpPost("[controller]/register")]
     public async Task<ActionResult<bool>> Register()
     {
-        LogOutUserCommand request = new ();
+        RegisterUserCommand request = new ();
 
         bool result = await _mediator.Send(request);
 
@@ -50,7 +50,7 @@ public class AuthController : ControllerBase
     [HttpPost("[controller]/refreshToken")]
     public async Task<ActionResult<bool>> RefreshToken()
     {
-        LogOutUserCommand request = new ();
+        RefreshTokenCommand request = new ();
 
         bool result = await _mediator.Send(request);
 
