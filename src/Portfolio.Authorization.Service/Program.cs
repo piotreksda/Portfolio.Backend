@@ -3,6 +3,8 @@ using Portfolio.Domain.Core.Application.PipelineBehaviors;
 using Portfolio.Domain.Core.Infrastructure.Services;
 using Portfolio.Domain.Core.Infrastructure.Services.Interfaces;
 using System.Reflection;
+using Microsoft.OpenApi.Models;
+using Portfolio.Domain.Core;
 using Portfolio.Domain.Core.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +14,17 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(
+    c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Version = "v1",
+            Title = "Portfolio.Dictionary.Service"
+        });
+        c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,
+            $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+    });
 
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();

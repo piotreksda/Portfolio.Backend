@@ -1,16 +1,17 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using System.Data.Common;
-using Portfolio.Domain.Core.Domain.Entities.Auth;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+﻿using System.Data.Common;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using Portfolio.Domain.Core.Domain;
+using Portfolio.Domain.Core.Domain.Entities.Auth;
 
-namespace Portfolio.Domain.Core.Domain.Entities;
+namespace Portfolio.Domain.Core;
 
 public static class ConfigureServices
 {
@@ -27,12 +28,12 @@ public static class ConfigureServices
 
         var connectionStringBuilder = new DbConnectionStringBuilder
         {
-            { "Server", configuration["DB_HOST"] },
-            { "Database", configuration["DB_NAME"] },
-            { "Port", configuration["DB_PORT"] },
-            { "Username", configuration["DB_USER"] },
-            { "Password", configuration["DB_PASSWORD"] },
-            { "Keepalive", configuration["DB_KEEPALIVE"] }
+            { "Server", configuration["DB_HOST"] ?? string.Empty },
+            { "Database", configuration["DB_NAME"] ?? string.Empty }, 
+            { "Port", configuration["DB_PORT"] ?? string.Empty },
+            { "Username", configuration["DB_USER"] ?? string.Empty },
+            { "Password", configuration["DB_PASSWORD"] ?? string.Empty },
+            { "Keepalive", configuration["DB_KEEPALIVE"] ?? string.Empty }
         };
         //"Server=localhost;Database=PortfolioDev;Port=5433;Username=postgres;Password=postgres;Keepalive=60"
         //connectionStringBuilder.ConnectionString

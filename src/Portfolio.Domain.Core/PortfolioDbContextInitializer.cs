@@ -1,8 +1,8 @@
-﻿using Portfolio.Domain.Core.Domain;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using Portfolio.Domain.Core.Domain;
 
-namespace Portfolio.Domain.Core.Domain;
+namespace Portfolio.Domain.Core;
 
 public class PortfolioDbContextInitializer
 {
