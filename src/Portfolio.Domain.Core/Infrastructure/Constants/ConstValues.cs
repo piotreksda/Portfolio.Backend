@@ -23,6 +23,13 @@ public class ExceptionsTranslationsKeys
     public static readonly string ValidationLanguageNotExist = "validationLanguageNotExist";
 }
 
+public enum TwoFaStrategyTypes
+{
+    Email2FaStrategy = 0,
+    Sms2FaStrategy = 1,
+    Totp2FaStrategy = 2
+}
+
 public class ContentType
 {
     public static readonly string ApplicationJson = "application/json";

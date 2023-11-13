@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <Folder Include="Application/Queries/" />
-    <Folder Include="Infrastructure/" />
+    <Folder Include="Infrastructure\Services\Interfaces\" />
   </ItemGroup>
 
   <PropertyGroup>
