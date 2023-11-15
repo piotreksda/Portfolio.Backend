@@ -1,11 +1,10 @@
-﻿using System.Net;
-using System.Text.Json;
-using Portfolio.Domain.Core.Domain.Exceptions;
-using Portfolio.Domain.Core.Domain.Models;
-using Portfolio.Domain.Core.Infrastructure.Contatints;
+﻿using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Portfolio.Domain.Core.Domain.Exceptions.CoreExceptions;
+using Portfolio.Domain.Core.Domain.Constants;
+using Portfolio.Domain.Core.Domain.Core.Exceptions.CoreExceptions;
+using Portfolio.Domain.Core.Domain.Core.Exceptions.UnauthorizedExceptions;
+using Portfolio.Domain.Core.Domain.Core.Models;
 using Portfolio.Domain.Core.Infrastructure.Extensions;
 
 namespace Portfolio.Domain.Core.Application.PipelineBehaviors;

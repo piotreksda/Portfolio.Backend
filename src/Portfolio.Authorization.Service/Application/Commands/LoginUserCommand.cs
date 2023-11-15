@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 using Portfolio.Authorization.Service.Domain.Dtos;
-using Portfolio.Authorization.Service.Domain.Entites.Models;
+using Portfolio.Authorization.Service.Domain.Entities.Models;
 
 namespace Portfolio.Authorization.Service.Application.Commands;
 

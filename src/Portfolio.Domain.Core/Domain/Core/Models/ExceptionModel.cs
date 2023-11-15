@@ -1,7 +1,6 @@
-﻿using Portfolio.Domain.Core.Infrastructure.Contatints;
-using Microsoft.AspNetCore.Http;
+﻿using Portfolio.Domain.Core.Domain.Constants;
 
-namespace Portfolio.Domain.Core.Domain.Models;
+namespace Portfolio.Domain.Core.Domain.Core.Models;
 
 public record ExceptionModel
 {

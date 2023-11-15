@@ -1,4 +1,4 @@
-﻿namespace Portfolio.Domain.Core.Domain.Exceptions;
+﻿namespace Portfolio.Domain.Core.Domain.Core.Exceptions.CoreExceptions;
 
 public abstract class PortfolioApplicationException : Exception
 {

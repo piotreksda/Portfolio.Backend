@@ -1,4 +1,4 @@
-﻿namespace Portfolio.Authorization.Service.Domain.Entites.Models;
+﻿namespace Portfolio.Authorization.Service.Domain.Entities.Models;
 
 public record LoginInputModel
 {

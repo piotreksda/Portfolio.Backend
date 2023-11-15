@@ -10,8 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using Portfolio.Domain.Core.Domain.Auth.Entities;
-using Portfolio.Domain.Core.Domain.Exceptions.NotFoundExceptions;
-using Portfolio.Domain.Core.Domain.Exceptions.UnauthorizedExceptions;
+using Portfolio.Domain.Core.Domain.Core.Exceptions.CoreExceptions;
+using Portfolio.Domain.Core.Domain.Core.Exceptions.NotFoundExceptions;
+using Portfolio.Domain.Core.Domain.Core.Exceptions.UnauthorizedExceptions;
 
 namespace Portfolio.Domain.Core.Infrastructure.Services;
 

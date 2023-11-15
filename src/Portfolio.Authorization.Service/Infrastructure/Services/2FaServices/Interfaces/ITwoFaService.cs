@@ -1,4 +1,4 @@
-using Portfolio.Domain.Core.Infrastructure.Contatints;
+using Portfolio.Domain.Core.Domain.Constants;
 
 namespace Portfolio.Authorization.Service.Infrastructure.Services._2FaServices.Interfaces;
 

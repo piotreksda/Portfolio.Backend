@@ -1,7 +1,7 @@
-using Portfolio.Domain.Core.Domain.Exceptions.CoreExceptions;
-using Portfolio.Domain.Core.Infrastructure.Contatints;
+using Portfolio.Domain.Core.Domain.Constants;
+using Portfolio.Domain.Core.Domain.Core.Exceptions.CoreExceptions;
 
-namespace Portfolio.Domain.Core.Domain.Exceptions.UnauthorizedExceptions;
+namespace Portfolio.Domain.Core.Domain.Core.Exceptions.UnauthorizedExceptions;
 
 public class TokenNotFoundInHeadersException : UnauthorizedException
 {

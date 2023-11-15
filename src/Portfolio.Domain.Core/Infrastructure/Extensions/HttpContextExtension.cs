@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Portfolio.Domain.Core.Infrastructure.Contatints;
+using Portfolio.Domain.Core.Domain.Constants;
 
 namespace Portfolio.Domain.Core.Infrastructure.Extensions;
 

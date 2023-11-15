@@ -1,6 +1,4 @@
-using Portfolio.Domain.Core.Domain.Entites;
-
-namespace Portfolio.Domain.Core.Domain.Primitives;
+namespace Portfolio.Domain.Core.Domain.Core.Primitives;
 
 public abstract class BaseAuditableEntity<T> : BaseEntity<T> where T : struct 
 {

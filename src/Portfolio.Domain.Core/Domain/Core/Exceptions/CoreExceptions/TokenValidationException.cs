@@ -1,6 +1,4 @@
-﻿using Portfolio.Domain.Core.Domain.Exceptions;
-
-namespace Portfolio.Domain.Core;
+﻿namespace Portfolio.Domain.Core.Domain.Core.Exceptions.CoreExceptions;
 
 public class TokenValidationException : PortfolioApplicationException
 {

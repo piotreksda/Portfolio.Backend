@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Portfolio.Authorization.Service.Application.Commands;
 using Portfolio.Authorization.Service.Domain.Dtos;
-using Portfolio.Authorization.Service.Domain.Entites.Models;
+using Portfolio.Authorization.Service.Domain.Entities.Models;
 using Portfolio.Domain.Core.Infrastructure.Extensions;
 
 namespace Portfolio.Authorization.Service.Application.Controllers;

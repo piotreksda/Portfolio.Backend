@@ -1,6 +1,6 @@
-using Portfolio.Domain.Core.Infrastructure.Contatints;
+using Portfolio.Domain.Core.Domain.Constants;
 
-namespace Portfolio.Domain.Core.Domain.Exceptions;
+namespace Portfolio.Domain.Core.Domain.Core.Exceptions.CoreExceptions;
 
 public class NotFoundException : PortfolioApplicationException
 {

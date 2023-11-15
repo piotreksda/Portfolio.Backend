@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Portfolio.Domain.Core.Infrastructure.Services.Interfaces;
 using System.Security.Claims;
+using Portfolio.Domain.Core.Domain.Core.Exceptions.CoreExceptions;
 
 namespace Portfolio.Domain.Core.Infrastructure.Attributes;
 

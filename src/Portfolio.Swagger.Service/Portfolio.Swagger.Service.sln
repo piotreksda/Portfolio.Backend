@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "..\..\tests", "{4285E216-BC7B-4609-A923-0671C3A49E9B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "..\..\src", "{fb2ffc5c-9b07-4a51-a0e4-cc798736b0b1}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "..\..\src", "{FB2FFC5C-9B07-4A51-A0E4-CC798736B0B1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Domain.Core", "..\Portfolio.Domain.Core\Portfolio.Domain.Core.csproj", "{5F2DB7F5-7671-48B0-9123-8492216540D7}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Authorization.Service.Tests", "..\..\tests\Portfolio.Authorization.Service.Tests\Portfolio.Authorization.Service.Tests.csproj", "{3A139A29-6F59-4BEC-9D51-1E26FB6F62EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Dictionary.Service.Tests", "..\..\tests\Portfolio.Dictionary.Service.Tests\Portfolio.Dictionary.Service.Tests.csproj", "{88E91697-2E12-480E-A223-32DAC71723AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Architecture.Tests", "..\..\tests\Portfolio.Architecture.Tests\Portfolio.Architecture.Tests.csproj", "{B1261385-2C29-46F3-97AA-94D0BE634DDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{185FD110-0C99-477B-BD1A-648F12D9C219}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{185FD110-0C99-477B-BD1A-648F12D9C219}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{185FD110-0C99-477B-BD1A-648F12D9C219}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1261385-2C29-46F3-97AA-94D0BE634DDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1261385-2C29-46F3-97AA-94D0BE634DDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1261385-2C29-46F3-97AA-94D0BE634DDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1261385-2C29-46F3-97AA-94D0BE634DDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,5 +63,6 @@ Global
 		{9484C5EB-FA02-43D1-8FF0-12AE33589ED7} = {fb2ffc5c-9b07-4a51-a0e4-cc798736b0b1}
 		{3A139A29-6F59-4BEC-9D51-1E26FB6F62EE} = {4285E216-BC7B-4609-A923-0671C3A49E9B}
 		{88E91697-2E12-480E-A223-32DAC71723AF} = {4285E216-BC7B-4609-A923-0671C3A49E9B}
+		{B1261385-2C29-46F3-97AA-94D0BE634DDE} = {4285E216-BC7B-4609-A923-0671C3A49E9B}
 	EndGlobalSection
 EndGlobal

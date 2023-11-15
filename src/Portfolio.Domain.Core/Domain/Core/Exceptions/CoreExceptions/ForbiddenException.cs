@@ -1,7 +1,6 @@
-﻿using Portfolio.Domain.Core.Domain.Exceptions;
-using Portfolio.Domain.Core.Infrastructure.Contatints;
+﻿using Portfolio.Domain.Core.Domain.Constants;
 
-namespace Portfolio.Domain.Core;
+namespace Portfolio.Domain.Core.Domain.Core.Exceptions.CoreExceptions;
 
 public class ForbiddenException : PortfolioApplicationException
 {

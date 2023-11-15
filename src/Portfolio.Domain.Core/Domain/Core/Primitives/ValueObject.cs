@@ -1,4 +1,4 @@
-namespace Portfolio.Domain.Core.Domain.Primitives;
+namespace Portfolio.Domain.Core.Domain.Core.Primitives;
 
 public abstract class ValueObject : IEquatable<ValueObject>
 {

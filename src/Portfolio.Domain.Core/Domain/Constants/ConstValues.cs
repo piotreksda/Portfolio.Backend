@@ -1,4 +1,4 @@
-﻿namespace Portfolio.Domain.Core.Infrastructure.Contatints;
+﻿namespace Portfolio.Domain.Core.Domain.Constants;
 
 public class ExceptionsTranslationsKeys
 {
