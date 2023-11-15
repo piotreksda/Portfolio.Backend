@@ -5,6 +5,8 @@ using Portfolio.Domain.Core.Domain.Models;
 using Portfolio.Domain.Core.Infrastructure.Contatints;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Portfolio.Domain.Core.Domain.Exceptions.CoreExceptions;
+using Portfolio.Domain.Core.Infrastructure.Extensions;
 
 namespace Portfolio.Domain.Core.Application.PipelineBehaviors;
 
@@ -22,35 +24,19 @@ public class ExceptionHandlingMiddleware : IMiddleware
     {
         try
         {
-            //context.Request.EnableBuffering();
-            if (context.Request.Headers.TryGetValue("languageId", out var languageStrId))
-            {
-                if (!string.IsNullOrEmpty(languageStrId))
-                {
-                    _languageId = Convert.ToInt32(languageStrId);
-
-                    // bool langExist = await _checkLanguageService.CheckLanguageExists(_languageId);
-                    // if (!langExist)
-                    // {
-                    //     _languageId = DefaultSettings.DefaultLangId;
-                    //     throw new BadRequestException(ErrorsTrKeys.validationLanguageNotExist);
-                    // }
-                }
-                else
-                    throw new BadRequestException(ExceptionsTranslationsKeys.ValidationLanguageNotExist);
-            }
-            context.Items.Add("languageId", _languageId);
             await next(context);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "An unhandled exception has occurred while executing the request.");
+            
             await HandleExceptionAsync(context, ex);
         }
     }
 
-    private Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
+        _languageId = context.GetLanguageId();
         int statusCode = GetStatusCode(exception);
 
         context.Response.ContentType = ContentType.ApplicationJson;
@@ -65,17 +51,17 @@ public class ExceptionHandlingMiddleware : IMiddleware
         };
 
         string payload = JsonSerializer.Serialize(response);
-        return context.Response.WriteAsync(payload);
+        await context.Response.WriteAsync(payload);
     }
 
     private string GetTitle(Exception exception)
     {
-        string titleTranslationKey = "";
+        string? titleTranslationKey = "";
         if (exception is PortfolioApplicationException appExc)
         {
             titleTranslationKey = appExc?.Title;
             if (titleTranslationKey == null)
-                titleTranslationKey = "";
+                titleTranslationKey = ExceptionsTranslationsKeys.DefaultErrorTitle;
         }
         else
         {
@@ -96,7 +82,9 @@ public class ExceptionHandlingMiddleware : IMiddleware
     {
         return exception switch
         {
-            ForbiddenException => ForceFrontExceptionAction.RefreshToken,
+            ForbiddenException => ForceFrontExceptionAction.NoAction,
+            TokenExpiredException => ForceFrontExceptionAction.RefreshToken,
+            UnauthorizedException => ForceFrontExceptionAction.Logout,
             _ => ForceFrontExceptionAction.NoAction
         };
     }
@@ -105,7 +93,11 @@ public class ExceptionHandlingMiddleware : IMiddleware
     {
         return exception switch
         {
-            ForbiddenException => StatusCodes.Status401Unauthorized,
+            UnauthorizedException => StatusCodes.Status401Unauthorized,
+            ForbiddenException => StatusCodes.Status403Forbidden,
+            NotFoundException => StatusCodes.Status404NotFound,
+            InvalidStateException => StatusCodes.Status409Conflict,
+            PortfolioApplicationException => StatusCodes.Status400BadRequest,
             _ => StatusCodes.Status500InternalServerError
         };
     }

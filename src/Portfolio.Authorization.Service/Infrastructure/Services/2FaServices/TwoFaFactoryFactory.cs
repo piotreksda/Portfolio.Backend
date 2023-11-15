@@ -15,11 +15,11 @@ public class TwoFaFactoryFactory : ITwoFaFactory
     public ITwoFaStrategy CreateStrategy(TwoFaStrategyTypes twoFaStrategyType) =>
         twoFaStrategyType switch
         {
-            TwoFaStrategyTypes.Email2FaStrategy => _serviceProvider.GetService<IEmail2FaStrategy>() 
+            TwoFaStrategyTypes.Email2FaStrategy => _serviceProvider.GetService<Email2FaStrategy>() 
                                                  ?? throw new InvalidOperationException(),
-            TwoFaStrategyTypes.Sms2FaStrategy => _serviceProvider.GetService<ISms2FaStrategy>() 
+            TwoFaStrategyTypes.Sms2FaStrategy => _serviceProvider.GetService<Sms2FaStrategy>() 
                                                ?? throw new InvalidOperationException(),
-            TwoFaStrategyTypes.Totp2FaStrategy => _serviceProvider.GetService<ITotp2FaStrategy>() 
+            TwoFaStrategyTypes.Totp2FaStrategy => _serviceProvider.GetService<Totp2FaStrategy>() 
                                                 ?? throw new InvalidOperationException(),
             _ => throw new NotImplementedException()
         };

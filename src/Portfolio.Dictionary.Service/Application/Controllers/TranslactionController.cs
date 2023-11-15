@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Portfolio.Domain.Core.Domain.Models;
 
-namespace Portfolio.Dictionary.Service.Controllers;
+namespace Portfolio.Dictionary.Service.Application.Controllers;
 
 [Route("api/dict/[Controller]")]
 [ApiController]

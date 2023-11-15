@@ -1,5 +1,4 @@
 ﻿using System.Runtime.InteropServices;
-using Portfolio.Domain.Core.Domain.Entities.Auth;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;

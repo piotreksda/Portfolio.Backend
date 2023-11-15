@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
+using Portfolio.Domain.Core.Domain.Auth.Entities;
+using Portfolio.Domain.Core.Domain.Exceptions.NotFoundExceptions;
+using Portfolio.Domain.Core.Domain.Exceptions.UnauthorizedExceptions;
 
 namespace Portfolio.Domain.Core.Infrastructure.Services;
 
@@ -24,6 +27,33 @@ public class JwtTokenService : IJwtTokenService
     public bool CheckIfTokenIsValid(string token)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<JwtSecurityToken> CreateTokenForUser(ApplicationUser user)
+    {
+
+        if (user is null)
+        {
+            throw new UserNotFoundException();
+        }
+        
+        Claim[] claims = 
+        {
+            new (JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new (JwtRegisteredClaimNames.UniqueName, user.UserName)
+        };
+
+        SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+        SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        JwtSecurityToken token = new JwtSecurityToken(
+            _configuration["Jwt:Issuer"],
+            _configuration["Jwt:Audience"],
+            claims,
+            expires: DateTime.Now.AddMinutes(30),
+            signingCredentials: creds
+        );
+
+        return token;
     }
 
     public async Task<IEnumerable<Claim>> CheckIfTokenIsValidAndReturnCalms(string token)
@@ -56,7 +86,7 @@ public class JwtTokenService : IJwtTokenService
 
         if (string.IsNullOrEmpty(token) && !tokenIsInHeaders)
         {
-            throw new Exception();//401 token not in headers exception
+            throw new TokenNotFoundInHeadersException();
         }
 
         return token;

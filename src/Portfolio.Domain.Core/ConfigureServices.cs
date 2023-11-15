@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Portfolio.Domain.Core.Domain;
-using Portfolio.Domain.Core.Domain.Entities.Auth;
+using Portfolio.Domain.Core.Domain.Auth.Entities;
 
 namespace Portfolio.Domain.Core;
 
