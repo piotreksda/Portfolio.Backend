@@ -22,6 +22,7 @@
   <ItemGroup>
     <Folder Include="Application/Queries/" />
     <Folder Include="Infrastructure\Services\Interfaces\" />
+    <Folder Include="Presentation\" />
   </ItemGroup>
 
   <PropertyGroup>

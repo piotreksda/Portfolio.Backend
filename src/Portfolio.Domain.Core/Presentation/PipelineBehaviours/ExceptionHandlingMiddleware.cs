@@ -5,14 +5,13 @@ using Portfolio.Domain.Core.Domain.Constants;
 using Portfolio.Domain.Core.Domain.Core.Exceptions.CoreExceptions;
 using Portfolio.Domain.Core.Domain.Core.Exceptions.UnauthorizedExceptions;
 using Portfolio.Domain.Core.Domain.Core.Models;
-using Portfolio.Domain.Core.Infrastructure.Extensions;
+using Portfolio.Domain.Core.Presentation.Extensions;
 
-namespace Portfolio.Domain.Core.Application.PipelineBehaviors;
+namespace Portfolio.Domain.Core.Presentation.PipelineBehaviours;
 
 public class ExceptionHandlingMiddleware : IMiddleware
 {
     private readonly ILogger<ExceptionHandlingMiddleware> _logger;
-    private int _languageId = DefaultSettings.DefaultLangId;
 
     public ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddleware> logger)
     {
@@ -35,7 +34,7 @@ public class ExceptionHandlingMiddleware : IMiddleware
 
     private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
-        _languageId = context.GetLanguageId();
+        int languageId = context.GetLanguageId();
         int statusCode = GetStatusCode(exception);
 
         context.Response.ContentType = ContentType.ApplicationJson;

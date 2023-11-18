@@ -1,9 +1,9 @@
-using Portfolio.Domain.Core.Application.PipelineBehaviors;
 using Portfolio.Domain.Core.Infrastructure.Services;
 using Portfolio.Domain.Core.Infrastructure.Services.Interfaces;
 using System.Reflection;
 using Microsoft.OpenApi.Models;
 using Portfolio.Domain.Core;
+using Portfolio.Domain.Core.Presentation.PipelineBehaviours;
 
 var builder = WebApplication.CreateBuilder(args);
 

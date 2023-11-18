@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Portfolio.Domain.Core.Domain.Constants;
 
-namespace Portfolio.Domain.Core.Infrastructure.Extensions;
+namespace Portfolio.Domain.Core.Presentation.Extensions;
 
 public static class HttpContextExtension
 {

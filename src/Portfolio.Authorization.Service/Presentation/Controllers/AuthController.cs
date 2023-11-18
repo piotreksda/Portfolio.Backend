@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Portfolio.Authorization.Service.Application.Commands;
 using Portfolio.Authorization.Service.Domain.Dtos;
 using Portfolio.Authorization.Service.Domain.Entities.Models;
-using Portfolio.Domain.Core.Infrastructure.Extensions;
+using Portfolio.Domain.Core.Presentation.Extensions;
 
-namespace Portfolio.Authorization.Service.Application.Controllers;
+namespace Portfolio.Authorization.Service.Presentation.Controllers;
 
 [Route("api")]
 [ApiController]
