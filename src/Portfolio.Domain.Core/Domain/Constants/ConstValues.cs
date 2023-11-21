@@ -33,6 +33,9 @@ public class ExceptionsTranslationsKeys
 
 
     public static readonly string ValidationLanguageNotExist = "validationLanguageNotExist";
+    
+    public static readonly string ValidationExceptionTitle = "validationException.title";
+    public static readonly string ValidationExceptionMessage = "validationException.message";
 }
 
 public enum TwoFaStrategyTypes

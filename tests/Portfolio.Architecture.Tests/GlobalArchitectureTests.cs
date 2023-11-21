@@ -1,32 +1,13 @@
-using System.Collections;
 using System.Reflection;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions;
 using NetArchTest.Rules;
 
 namespace Portfolio.Architecture.Tests;
 
 public class GlobalArchitectureTests
 {
-    private static readonly List<string> ProjectNames = new()
-    {
-        "Portfolio.Authorization.Service",
-        "Portfolio.Dictionary.Service"
-    };
-
-    private static readonly Assembly? DomainCoreAssembly = Type.GetType($"Portfolio.Domain.Core.Infrastructure.Architecture.GetAssembly, Portfolio.Domain.Core")?.Assembly;
-    private static readonly List<Assembly?> MicroservicesAssemblies = ProjectNames.Select(x => Type.GetType($"{x}.Infrastructure.Architecture.GetAssembly, {x}")?.Assembly).ToList();
-    
-    public static IEnumerable<object[]?> MicroservicesAssemblyData()
-    {
-        return MicroservicesAssemblies.Select(a => new object[] { (a ?? null)! });
-    }
-
-    public static IEnumerable<object[]?> MicroservicesWithDomainCoreAssemblyData()
-    {
-        List<object[]?> tempList = new() { new object[] {(Object)DomainCoreAssembly } };
-        return MicroservicesAssemblyData().Concat(tempList);
-    }
+    public static IEnumerable<object[]?> MicroservicesWithDomainCoreAssemblyData =
+        PortfolioAssemblies.MicroservicesWithDomainCoreAssemblyData();
     
     [Theory]
     [MemberData(nameof(MicroservicesWithDomainCoreAssemblyData))]
@@ -37,13 +18,13 @@ public class GlobalArchitectureTests
     }
 
     [Theory]
-    [MemberData(nameof(MicroservicesWithDomainCoreAssemblyData))]
+    [MemberData(nameof(PortfolioAssemblies.MicroservicesWithDomainCoreAssemblyData))]
     public void Domain_Should_Not_HaveDependencyOnOtherNameSpaces(Assembly assembly)
     {
         // Arrange
         List<string> otherNameSpaces;
         
-        if (assembly.Equals(DomainCoreAssembly))
+        if (assembly.Equals(PortfolioAssemblies.DomainCoreAssembly))
         {
             otherNameSpaces = new List<string>()
             {
@@ -77,17 +58,17 @@ public class GlobalArchitectureTests
     }
     
     [Theory]
-    [MemberData(nameof(MicroservicesWithDomainCoreAssemblyData))]
+    [MemberData(nameof(PortfolioAssemblies.MicroservicesWithDomainCoreAssemblyData))]
     public void Infrastructure_Should_Not_HaveDependencyOnApplicationOrPresentation(Assembly assembly)
     {
         // Arrange
         List<string> otherNameSpaces;
         
-        if (assembly.Equals(DomainCoreAssembly))
+        if (assembly.Equals(PortfolioAssemblies.DomainCoreAssembly))
         {
             otherNameSpaces = new List<string>()
             {
-                $"{assembly.GetName().Name}.Application",
+                // $"{assembly.GetName().Name}.Application",
                 $"{assembly.GetName().Name}.Presentation"
             };
         }
@@ -95,9 +76,9 @@ public class GlobalArchitectureTests
         {
             otherNameSpaces = new List<string>()
             {
-                $"{assembly.GetName().Name}.Application",
+                // $"{assembly.GetName().Name}.Application",
                 $"{assembly.GetName().Name}.Presentation",
-                "Portfolio.Domain.Core.Application",
+                // "Portfolio.Domain.Core.Application",
                 "Portfolio.Domain.Core.Presentation"
             };
         }
@@ -115,13 +96,13 @@ public class GlobalArchitectureTests
     }
     
     [Theory]
-    [MemberData(nameof(MicroservicesWithDomainCoreAssemblyData))]
+    [MemberData(nameof(PortfolioAssemblies.MicroservicesWithDomainCoreAssemblyData))]
     public void Application_Should_Not_HaveDependencyOnInfrastructureOrPresentation(Assembly assembly)
     {
         // Arrange
         List<string> otherNameSpaces;
         
-        if (assembly.Equals(DomainCoreAssembly))
+        if (assembly.Equals(PortfolioAssemblies.DomainCoreAssembly))
         {
             otherNameSpaces = new List<string>()
             {

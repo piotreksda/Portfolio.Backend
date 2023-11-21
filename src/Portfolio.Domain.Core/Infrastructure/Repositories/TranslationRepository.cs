@@ -1,16 +1,16 @@
+using Portfolio.Domain.Core.Application.Abstractions;
 using Portfolio.Domain.Core.Domain.Dictionary.Entities;
-using Portfolio.Domain.Core.Infrastructure.Repositories.Interfaces;
 
 namespace Portfolio.Domain.Core.Infrastructure.Repositories;
 
-public class TranslationRepository : IRootRepository<Translation, Guid>
+public class TranslationRepository : ITranslationRepository
 {
-    public async Task<Translation> GetById(Guid id)
+    public async Task<Translation?> GetById(Guid id)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<Translation> GetByIdToEdit(Guid id)
+    public async Task<Translation?> GetByIdToEdit(Guid id)
     {
         throw new NotImplementedException();
     }
@@ -20,12 +20,12 @@ public class TranslationRepository : IRootRepository<Translation, Guid>
         throw new NotImplementedException();
     }
 
-    public async Task Add()
+    public async Task Add(Translation entity)
     {
         throw new NotImplementedException();
     }
 
-    public async Task Remove()
+    public async Task Remove(Translation entity)
     {
         throw new NotImplementedException();
     }

@@ -1,7 +1,6 @@
 using MediatR;
-using Portfolio.Authorization.Service.Application.Commands;
 
-namespace Portfolio.Authorization.Service.Application.Handlers;
+namespace Portfolio.Authorization.Service.Application.LogoutUser;
 
 public class LogOutUserCommandHandler : IRequestHandler<LogOutUserCommand, bool>
 {

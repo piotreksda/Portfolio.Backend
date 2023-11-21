@@ -1,8 +1,6 @@
 ﻿using MediatR;
-using Portfolio.Authorization.Service.Application.Commands;
-using Portfolio.Authorization.Service.Domain.Dtos;
 
-namespace Portfolio.Authorization.Service.Application.Handlers;
+namespace Portfolio.Authorization.Service.Application.LoginUser;
 
 public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginDto>
 {

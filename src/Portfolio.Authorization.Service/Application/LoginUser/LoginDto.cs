@@ -1,4 +1,4 @@
-﻿namespace Portfolio.Authorization.Service.Domain.Dtos;
+﻿namespace Portfolio.Authorization.Service.Application.LoginUser;
 
 public record LoginDto
 {

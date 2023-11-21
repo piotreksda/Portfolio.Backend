@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Portfolio.Domain.Core.Domain.Entities;
+using Portfolio.Domain.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddInfrastructureServices(builder.Configuration);

@@ -1,8 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Portfolio.Authorization.Service.Application.Commands;
-using Portfolio.Authorization.Service.Domain.Dtos;
-using Portfolio.Authorization.Service.Domain.Entities.Models;
+using Portfolio.Authorization.Service.Application.LoginUser;
+using Portfolio.Authorization.Service.Application.LogoutUser;
+using Portfolio.Authorization.Service.Application.RefreshToken;
+using Portfolio.Authorization.Service.Application.RegisterUser;
 using Portfolio.Domain.Core.Presentation.Extensions;
 
 namespace Portfolio.Authorization.Service.Presentation.Controllers;
@@ -39,9 +40,10 @@ public class AuthController : ControllerBase
         return result;
     }
     [HttpPost("[controller]/register")]
-    public async Task<ActionResult<bool>> Register()
+    public async Task<ActionResult<bool>> Register([FromBody] RegisterInputModel registerModel)
     {
-        RegisterUserCommand request = new ();
+        
+        RegisterUserCommand request = new (registerModel);
 
         bool result = await _mediator.Send(request);
 

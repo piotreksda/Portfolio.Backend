@@ -1,8 +1,8 @@
 using System.Reflection;
+// using FluentValidation;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.OpenApi.Models;
 using Portfolio.Domain.Core;
-using Portfolio.Domain.Core.Domain;
 using Portfolio.Domain.Core.Infrastructure.Services;
 using Portfolio.Domain.Core.Infrastructure.Services.Interfaces;
 using Portfolio.Domain.Core.Presentation.PipelineBehaviours;
@@ -14,6 +14,10 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
     c =>
@@ -29,6 +33,7 @@ builder.Services.AddSwaggerGen(
 
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+// builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
 var app = builder.Build();
 

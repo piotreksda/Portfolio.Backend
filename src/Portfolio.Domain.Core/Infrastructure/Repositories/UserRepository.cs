@@ -1,32 +1,44 @@
+using Microsoft.EntityFrameworkCore;
+using Portfolio.Domain.Core.Application.Abstractions;
+using Portfolio.Domain.Core.Domain;
 using Portfolio.Domain.Core.Domain.Auth.Entities;
-using Portfolio.Domain.Core.Infrastructure.Repositories.Interfaces;
 
 namespace Portfolio.Domain.Core.Infrastructure.Repositories;
 
-public class UserRepository : IRootRepository<ApplicationUser, int>
+public class UserRepository : IUserRepository
 {
-    public async Task<ApplicationUser> GetById(int id)
+    private readonly PortfolioDbContext _context;
+
+    public UserRepository(PortfolioDbContext context)
     {
-        throw new NotImplementedException();
+        _context = context;
     }
 
-    public async Task<ApplicationUser> GetByIdToEdit(int id)
+    public async Task<ApplicationUser?> GetById(int id)
     {
-        throw new NotImplementedException();
+        return await _context.Users
+            .AsNoTracking()
+            .SingleOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<ApplicationUser?> GetByIdToEdit(int id)
+    {
+        return await _context.Users
+            .SingleOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<IEnumerable<ApplicationUser>> GetAll()
     {
-        throw new NotImplementedException();
+        return await _context.Users.ToListAsync();
     }
 
-    public async Task Add()
+    public async Task Add(ApplicationUser entity)
     {
-        throw new NotImplementedException();
+        await _context.Users.AddAsync(entity);
     }
 
-    public async Task Remove()
+    public async Task Remove(ApplicationUser entity)
     {
-        throw new NotImplementedException();
+        entity.Delete();
     }
 }

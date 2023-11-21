@@ -1,8 +1,11 @@
 using Portfolio.Domain.Core.Infrastructure.Services;
 using Portfolio.Domain.Core.Infrastructure.Services.Interfaces;
 using System.Reflection;
+// using FluentValidation;
 using Microsoft.OpenApi.Models;
 using Portfolio.Domain.Core;
+using Portfolio.Domain.Core.Application.Abstractions;
+using Portfolio.Domain.Core.Infrastructure.Repositories;
 using Portfolio.Domain.Core.Presentation.PipelineBehaviours;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
 builder.Services.AddControllers();
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
@@ -26,12 +32,13 @@ builder.Services.AddSwaggerGen(
 
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddHealthChecks();
 
 var app = builder.Build();
-
 app.MapHealthChecks("/healthz");
 
 if (app.Environment.IsDevelopment())
