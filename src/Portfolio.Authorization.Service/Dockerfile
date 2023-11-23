@@ -1,5 +1,5 @@
 # Use the official .NET SDK image as the build environment
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
 # Set a working directory in the container
 WORKDIR /publish
@@ -13,7 +13,7 @@ RUN dotnet publish "./Portfolio.Authorization.Service/Portfolio.Authorization.Se
 RUN dotnet dev-certs https
 
 # Use a smaller runtime image for the final image
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 
 # Set a working directory in the container
 WORKDIR /app
