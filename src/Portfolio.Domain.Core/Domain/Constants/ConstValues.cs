@@ -52,6 +52,12 @@ public class ContentType
     public static readonly string Wildcard = "*/*";
 }
 
+public class ClaimsTypes
+{
+    public static readonly string UserIdClaim = "UserId";
+    public static readonly string PermissionListClaim = "Permissions";
+}
+
 public class DefaultSettings
 {
     public static int DefaultLangId = 1;

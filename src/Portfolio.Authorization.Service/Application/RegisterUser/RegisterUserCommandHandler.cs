@@ -23,6 +23,8 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, b
         
         user.SetPassword(Password.HashPassword(password));
 
+        await _userRepository.AddAsync(user);
+        
         return true;
     }
 }

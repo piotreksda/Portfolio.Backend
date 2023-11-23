@@ -66,20 +66,20 @@ public class EntityTypeConfigurationTests
                          .ToHashSet();
     }
     
+    //todo: inprogress
     private HashSet<string> GetConfiguredPropertiesInConfiguration(Type configurationType)
     {
         var methodInfo = configurationType.GetMethod("Configure");
         if (methodInfo == null) throw new InvalidOperationException($"Configure method not found in {configurationType.Name}");
         
-        // This is a simplistic approach and may need to be adjusted depending on how the Configure method is implemented
         var methodBody = methodInfo.GetMethodBody();
         if (methodBody == null) return new HashSet<string>();
     
         var ilAsByteArray = methodBody.GetILAsByteArray();
         // Analyze the IL byte array to identify which properties are being configured
         // This is complex and requires understanding of IL. Alternatively, use a simpler but less accurate method like parsing the method's source code if available
-        // todo: someday i will find way to do it :( maybe this link https://github.com/jbevain/cecil/ but its future task
         // For demonstration purposes, returning an empty set
+        // todo: someday i will find way to do it :( maybe this link https://github.com/jbevain/cecil/ but its future task
         return new HashSet<string>();
     }
 }

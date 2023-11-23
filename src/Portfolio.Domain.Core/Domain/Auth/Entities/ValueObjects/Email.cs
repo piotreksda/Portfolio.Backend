@@ -45,4 +45,9 @@ public class Email : ValueObject
             throw new ValidationException();
         }
     }
+
+    public Email GetNormalizedEmail()
+    {
+        return new Email(Value.ToUpper());
+    }
 }

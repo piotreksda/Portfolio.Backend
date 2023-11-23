@@ -73,6 +73,7 @@ public class ExceptionHandlingMiddleware : IMiddleware
 
     private string GetMessage(Exception exception)
     {
+        //todo: inprogress
         return "";
     }
 

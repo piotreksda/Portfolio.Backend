@@ -11,17 +11,14 @@ public class RolePermissionSetConfiguration : IEntityTypeConfiguration<RolePermi
 
         builder.HasKey(rsp => rsp.Id);
         builder.HasIndex(rsp => new { rsp.PermissionSetId, rsp.RoleId });
-        
-        builder.HasOne(rsp => rsp.PermissionSet)
-            .WithMany()
-            .HasForeignKey(rsp => rsp.PermissionSetId)
-            .HasConstraintName("FK_RolePermissionSet_PermissionSetId");
 
-        builder.HasOne(rsp => rsp.Role)
-            .WithMany()
-            .HasForeignKey(rsp => rsp.RoleId)
-            .HasConstraintName("FK_RolePermissionSet_RoleId");
-    
+        builder.HasOne(rsp => rsp.PermissionSet)
+            .WithMany(ps => ps.RolePermissionSets)
+            .HasForeignKey(rsp => rsp.PermissionSetId);
+
+            builder.HasOne(rsp => rsp.Role)
+                .WithMany(r => r.RolesPermissionSets)
+                .HasForeignKey(rsp => rsp.RoleId);
         
         builder.Property(rsp => rsp.CreatedAt).IsRequired();
         builder.Property(rsp => rsp.CreatedBy).IsRequired();

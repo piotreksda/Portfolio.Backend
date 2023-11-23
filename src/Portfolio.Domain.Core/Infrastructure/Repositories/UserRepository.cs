@@ -1,44 +1,49 @@
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Domain.Core.Application.Abstractions;
-using Portfolio.Domain.Core.Domain;
 using Portfolio.Domain.Core.Domain.Auth.Entities;
+using Portfolio.Domain.Core.Domain.Auth.Entities.ValueObjects;
+using Portfolio.Domain.Core.Infrastructure.EntityFramework;
 
 namespace Portfolio.Domain.Core.Infrastructure.Repositories;
 
-public class UserRepository : IUserRepository
+public class UserRepository : RootRepository<ApplicationUser, int>, IUserRepository
 {
-    private readonly PortfolioDbContext _context;
-
-    public UserRepository(PortfolioDbContext context)
+    public UserRepository(PortfolioDbContext dbContext) : base(dbContext)
     {
-        _context = context;
     }
 
-    public async Task<ApplicationUser?> GetById(int id)
+    public new async Task<ApplicationUser?> GetByIdAsync(int id)
     {
-        return await _context.Users
-            .AsNoTracking()
+        return await _dbContext.Users
+            .Include(x => x.UsersRoles)
+                .ThenInclude(x => x.Role)
+            .Include(x => x.RefreshTokens)
+            .Include(x => x.LoginHistories)
             .SingleOrDefaultAsync(x => x.Id == id);
+
     }
 
-    public async Task<ApplicationUser?> GetByIdToEdit(int id)
+    public async Task<bool> CheckIfEmailIsUsed(Email email)
     {
-        return await _context.Users
-            .SingleOrDefaultAsync(x => x.Id == id);
+        return _dbContext.Users.Any(x => x.Email.Value == email);
     }
 
-    public async Task<IEnumerable<ApplicationUser>> GetAll()
+    public async Task<bool> CheckIfUserNameIsUsed(string userName)
     {
-        return await _context.Users.ToListAsync();
+        return _dbContext.Users.Any(x => x.UserName == userName);
     }
 
-    public async Task Add(ApplicationUser entity)
+    public async Task<ApplicationUser?> GetUserByUserNameOrEmail(string value)
     {
-        await _context.Users.AddAsync(entity);
-    }
-
-    public async Task Remove(ApplicationUser entity)
-    {
-        entity.Delete();
+        return await _dbContext.Users
+            .Include(x => x.UsersRoles)
+                .ThenInclude(x => x.Role)
+                    .ThenInclude(x => x.RolesPermissionSets)
+                        .ThenInclude(x => x.PermissionSet)
+                            .ThenInclude(x => x.PermissionPermissionSet)
+                                .ThenInclude(x => x.Permission)
+            .Include(x => x.RefreshTokens)
+            .Include(x => x.LoginHistories)
+            .SingleOrDefaultAsync(x => x.UserName == value || x.Email.Value == value);
     }
 }

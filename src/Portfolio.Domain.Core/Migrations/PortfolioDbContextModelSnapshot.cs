@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Portfolio.Domain.Core.Domain;
+using Portfolio.Domain.Core.Infrastructure.EntityFramework;
 
 #nullable disable
 
@@ -152,7 +152,7 @@ namespace Portfolio.Domain.Core.Migrations
                     b.Property<DateTime>("Date")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2023, 11, 21, 9, 29, 21, 372, DateTimeKind.Utc).AddTicks(4070));
+                        .HasDefaultValue(new DateTime(2023, 11, 23, 19, 37, 58, 810, DateTimeKind.Utc).AddTicks(8100));
 
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
@@ -241,22 +241,12 @@ namespace Portfolio.Domain.Core.Migrations
                     b.Property<int>("PermissionId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("PermissionId1")
-                        .HasColumnType("integer");
-
                     b.Property<int>("PermissionSetId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("PermissionSetId1")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PermissionId1");
-
                     b.HasIndex("PermissionSetId");
-
-                    b.HasIndex("PermissionSetId1");
 
                     b.HasIndex("PermissionId", "PermissionSetId");
 
@@ -311,9 +301,6 @@ namespace Portfolio.Domain.Core.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ApplicationUserId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -331,10 +318,6 @@ namespace Portfolio.Domain.Core.Migrations
                     b.Property<int?>("ModifiedBy")
                         .HasColumnType("integer");
 
-                    b.Property<byte[]>("Token")
-                        .IsRequired()
-                        .HasColumnType("bytea");
-
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
@@ -342,8 +325,6 @@ namespace Portfolio.Domain.Core.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("Id");
 
@@ -514,11 +495,10 @@ namespace Portfolio.Domain.Core.Migrations
             modelBuilder.Entity("Portfolio.Domain.Core.Domain.Auth.Entities.LoginHistory", b =>
                 {
                     b.HasOne("Portfolio.Domain.Core.Domain.Auth.Entities.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("LoginHistories")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_LoginHistory_UserId");
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -526,26 +506,14 @@ namespace Portfolio.Domain.Core.Migrations
             modelBuilder.Entity("Portfolio.Domain.Core.Domain.Auth.Entities.PermissionPermissionSet", b =>
                 {
                     b.HasOne("Portfolio.Domain.Core.Domain.Auth.Entities.Permission", "Permission")
-                        .WithMany()
+                        .WithMany("PermissionPermissionSet")
                         .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_PermissionPermissionSet_Permission");
-
-                    b.HasOne("Portfolio.Domain.Core.Domain.Auth.Entities.Permission", null)
-                        .WithMany("PermissionPermissionSet")
-                        .HasForeignKey("PermissionId1");
-
-                    b.HasOne("Portfolio.Domain.Core.Domain.Auth.Entities.PermissionSet", null)
-                        .WithMany("PermissionPermissionSet")
-                        .HasForeignKey("PermissionSetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_PermissionSet_PermissionSetId");
+                        .IsRequired();
 
                     b.HasOne("Portfolio.Domain.Core.Domain.Auth.Entities.PermissionSet", "PermissionSet")
-                        .WithMany()
-                        .HasForeignKey("PermissionSetId1")
+                        .WithMany("PermissionPermissionSet")
+                        .HasForeignKey("PermissionSetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -556,16 +524,36 @@ namespace Portfolio.Domain.Core.Migrations
 
             modelBuilder.Entity("Portfolio.Domain.Core.Domain.Auth.Entities.RefreshToken", b =>
                 {
-                    b.HasOne("Portfolio.Domain.Core.Domain.Auth.Entities.ApplicationUser", null)
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("Portfolio.Domain.Core.Domain.Auth.Entities.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_RefreshToken_UserId");
+                        .IsRequired();
+
+                    b.OwnsOne("Portfolio.Domain.Core.Domain.Auth.Entities.ValueObjects.RefreshTokenValue", "Token", b1 =>
+                        {
+                            b1.Property<int>("RefreshTokenId")
+                                .HasColumnType("integer");
+
+                            b1.Property<byte[]>("Value")
+                                .IsRequired()
+                                .HasColumnType("bytea")
+                                .HasColumnName("TokenValue");
+
+                            b1.HasKey("RefreshTokenId");
+
+                            b1.HasIndex("Value")
+                                .IsUnique()
+                                .HasDatabaseName("RefreshTokens_TokenValue");
+
+                            b1.ToTable("RefreshTokens");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RefreshTokenId");
+                        });
+
+                    b.Navigation("Token")
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -573,18 +561,16 @@ namespace Portfolio.Domain.Core.Migrations
             modelBuilder.Entity("Portfolio.Domain.Core.Domain.Auth.Entities.RolePermissionSet", b =>
                 {
                     b.HasOne("Portfolio.Domain.Core.Domain.Auth.Entities.PermissionSet", "PermissionSet")
-                        .WithMany()
+                        .WithMany("PermissionSets")
                         .HasForeignKey("PermissionSetId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_RolePermissionSet_PermissionSetId");
+                        .IsRequired();
 
                     b.HasOne("Portfolio.Domain.Core.Domain.Auth.Entities.ApplicationRole", "Role")
-                        .WithMany()
+                        .WithMany("RolesPermissionSets")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_RolePermissionSet_RoleId");
+                        .IsRequired();
 
                     b.Navigation("PermissionSet");
 
@@ -593,33 +579,17 @@ namespace Portfolio.Domain.Core.Migrations
 
             modelBuilder.Entity("Portfolio.Domain.Core.Domain.Auth.Entities.UserRole", b =>
                 {
-                    b.HasOne("Portfolio.Domain.Core.Domain.Auth.Entities.ApplicationRole", null)
+                    b.HasOne("Portfolio.Domain.Core.Domain.Auth.Entities.ApplicationRole", "Role")
                         .WithMany("UsersRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_ApplicationRole_RoleId");
+                        .IsRequired();
 
                     b.HasOne("Portfolio.Domain.Core.Domain.Auth.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_UserRole_RoleId");
-
-                    b.HasOne("Portfolio.Domain.Core.Domain.Auth.Entities.ApplicationRole", "Role")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_UserRole_UserId");
-
-                    b.HasOne("Portfolio.Domain.Core.Domain.Auth.Entities.ApplicationUser", null)
                         .WithMany("UsersRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_ApplicationUser_RoleId");
+                        .IsRequired();
 
                     b.Navigation("Role");
 
@@ -628,11 +598,15 @@ namespace Portfolio.Domain.Core.Migrations
 
             modelBuilder.Entity("Portfolio.Domain.Core.Domain.Auth.Entities.ApplicationRole", b =>
                 {
+                    b.Navigation("RolesPermissionSets");
+
                     b.Navigation("UsersRoles");
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Core.Domain.Auth.Entities.ApplicationUser", b =>
                 {
+                    b.Navigation("LoginHistories");
+
                     b.Navigation("RefreshTokens");
 
                     b.Navigation("UsersRoles");
@@ -646,6 +620,8 @@ namespace Portfolio.Domain.Core.Migrations
             modelBuilder.Entity("Portfolio.Domain.Core.Domain.Auth.Entities.PermissionSet", b =>
                 {
                     b.Navigation("PermissionPermissionSet");
+
+                    b.Navigation("PermissionSets");
                 });
 #pragma warning restore 612, 618
         }

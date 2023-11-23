@@ -20,8 +20,7 @@ public class PermissionConfiguration : IEntityTypeConfiguration<Permission>
         builder.Property(r => r.Deleted).IsRequired().HasDefaultValue(false);
 
         builder.HasMany(p => p.PermissionPermissionSet)
-            .WithOne()
-            .HasForeignKey(pps => pps.PermissionId)
-            .HasConstraintName("FK_Permission_PermissionId");
+            .WithOne(pps => pps.Permission)
+            .HasForeignKey(pps => pps.PermissionId);
     }
 }

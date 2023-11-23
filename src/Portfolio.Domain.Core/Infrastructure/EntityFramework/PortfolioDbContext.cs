@@ -1,15 +1,16 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Portfolio.Domain.Core.Application.Abstractions;
 using Portfolio.Domain.Core.Domain.Auth.Entities;
 using Portfolio.Domain.Core.Domain.Auth.Entities.Configurations;
 
-namespace Portfolio.Domain.Core.Domain;
+namespace Portfolio.Domain.Core.Infrastructure.EntityFramework;
 
 public class PortfolioDbContext : DbContext
 {
-    public PortfolioDbContext(DbContextOptions options) : base(options)
+    private readonly IIdentityContext _identityContext;
+    public PortfolioDbContext(DbContextOptions options, IIdentityContext identityContext) : base(options)
     {
-
+        _identityContext = identityContext;
     }
 
     public DbSet<ApplicationUser> Users { get; set; }
@@ -22,6 +23,14 @@ public class PortfolioDbContext : DbContext
     public DbSet<RolePermissionSet> RolesPermissionSets { get; set; }
     public DbSet<UserRole> UsersRoles { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+        optionsBuilder.AddInterceptors(new UpdateAuditableEntitiesInterceptor(_identityContext));
+
+        base.OnConfiguring(optionsBuilder);
+    }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

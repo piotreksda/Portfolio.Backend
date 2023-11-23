@@ -15,4 +15,5 @@ public class ApplicationRole : BaseAuditableEntity<int>
     }
     public string Name { get; private set; }
     public virtual ICollection<UserRole> UsersRoles { get; private set; }
+    public virtual ICollection<RolePermissionSet> RolesPermissionSets { get; private set; }
 }

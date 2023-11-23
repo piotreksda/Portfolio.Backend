@@ -1,7 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Portfolio.Domain.Core.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
@@ -9,7 +8,9 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
+using Portfolio.Domain.Core.Application.Abstractions;
 using Portfolio.Domain.Core.Domain.Auth.Entities;
+using Portfolio.Domain.Core.Domain.Constants;
 using Portfolio.Domain.Core.Domain.Core.Exceptions.CoreExceptions;
 using Portfolio.Domain.Core.Domain.Core.Exceptions.NotFoundExceptions;
 using Portfolio.Domain.Core.Domain.Core.Exceptions.UnauthorizedExceptions;
@@ -19,11 +20,9 @@ namespace Portfolio.Domain.Core.Infrastructure.Services;
 public class JwtTokenService : IJwtTokenService
 {
     private readonly IConfiguration _configuration;
-    private readonly IAuthenticationService _authenticationService;
-    public JwtTokenService(IConfiguration configuration, IAuthenticationService authenticationService)
+    public JwtTokenService(IConfiguration configuration)
     {
         _configuration = configuration;
-        _authenticationService = authenticationService;
     }
     public bool CheckIfTokenIsValid(string token)
     {
@@ -33,41 +32,57 @@ public class JwtTokenService : IJwtTokenService
     public async Task<JwtSecurityToken> CreateTokenForUser(ApplicationUser user)
     {
 
-        if (user is null)
-        {
-            throw new UserNotFoundException();
-        }
         
-        Claim[] claims = 
+            if (user is null)
+            {
+                throw new UserNotFoundException();
+            }
+
+            var permissionList = user.GetPermissionsList();
+            var claims = GetClaims(user, permissionList);
+            return CreateJwtToken(claims);
+    }
+
+    private List<Claim> GetClaims(ApplicationUser user, IEnumerable<string> permissionList)
+    {
+        var claims = new List<Claim>
         {
-            new (JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new (JwtRegisteredClaimNames.UniqueName, user.UserName)
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
         };
 
-        SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-        SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        JwtSecurityToken token = new JwtSecurityToken(
+        claims.AddRange(permissionList.Select(permission => 
+            new Claim(ClaimsTypes.PermissionListClaim, permission)));
+
+        return claims;
+    }
+
+    private JwtSecurityToken CreateJwtToken(IEnumerable<Claim> claims)
+    {
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        return new JwtSecurityToken(
             _configuration["Jwt:Issuer"],
             _configuration["Jwt:Audience"],
             claims,
             expires: DateTime.Now.AddMinutes(30),
             signingCredentials: creds
         );
-
-        return token;
     }
+    
 
     public async Task<IEnumerable<Claim>> CheckIfTokenIsValidAndReturnCalms(string token)
     {
-        string defaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        AuthenticateResult authenticationResult = await _authenticationService.AuthenticateAsync(new DefaultHttpContext(), defaultAuthenticateScheme);
-
-        if (!authenticationResult.Succeeded)
-        {
-            throw GetAuthenticationException(authenticationResult.Failure);
-        }
-
-        return authenticationResult.Principal.Claims;
+        // string defaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        // AuthenticateResult authenticationResult = await _authenticationService.AuthenticateAsync(new DefaultHttpContext(), defaultAuthenticateScheme);
+        //
+        // if (!authenticationResult.Succeeded)
+        // {
+        //     throw GetAuthenticationException(authenticationResult.Failure);
+        // }
+        //
+        // return authenticationResult.Principal.Claims;
+        return null;
     }
 
     private Exception GetAuthenticationException(Exception? exception)
@@ -81,9 +96,9 @@ public class JwtTokenService : IJwtTokenService
         };
     }
 
-    public string GetTokenFromContext(ActionExecutingContext context)
+    public string GetTokenFromContext(HttpContext context)
     {
-        bool tokenIsInHeaders = context.HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues token);
+        bool tokenIsInHeaders = context.Request.Headers.TryGetValue("Authorization", out StringValues token);
 
         if (string.IsNullOrEmpty(token) && !tokenIsInHeaders)
         {

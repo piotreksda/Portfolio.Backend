@@ -13,15 +13,12 @@ public class PermissionPermissionSetConfiguration : IEntityTypeConfiguration<Per
         builder.HasIndex(pps => new { pps.PermissionId, pps.PermissionSetId });
         
         builder.HasOne(pps => pps.Permission)
-            .WithMany()
-            .HasForeignKey(pps => pps.PermissionId)
-            .HasConstraintName("FK_PermissionPermissionSet_Permission");
+            .WithMany(p => p.PermissionPermissionSet)
+            .HasForeignKey(pps => pps.PermissionId);
 
         builder.HasOne(pps => pps.PermissionSet)
-            .WithMany()
-            .HasForeignKey(pps => pps.PermissionSetId)
-            .HasConstraintName("FK_PermissionPermissionSet_PermissionSet");
-    
+            .WithMany(ps => ps.PermissionPermissionSet)
+            .HasForeignKey(pps => pps.PermissionSetId);
         
         builder.Property(pps => pps.CreatedAt).IsRequired();
         builder.Property(pps => pps.CreatedBy).IsRequired();

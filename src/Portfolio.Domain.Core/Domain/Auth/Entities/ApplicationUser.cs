@@ -15,7 +15,9 @@ public class ApplicationUser : BaseAuditableEntity<int>
     public ApplicationUser(string userName, Email email)
     {
         UserName = userName;
+        NormalizedUserName = userName.ToUpper();
         Email = email;
+        NormalizedEmail = email.GetNormalizedEmail();
     }
     public string UserName { get; private set; }
     public string NormalizedUserName { get; private set; }
@@ -36,8 +38,9 @@ public class ApplicationUser : BaseAuditableEntity<int>
 
     public int AccessFailedCount { get; private set; }
 
-    public virtual ICollection<UserRole> UsersRoles { get; private set; }
-    public virtual ICollection<RefreshToken> RefreshTokens { get; private set; }
+    public virtual ICollection<UserRole> UsersRoles { get; private set; } = new List<UserRole>();
+    public virtual ICollection<RefreshToken> RefreshTokens { get; private set; } = new List<RefreshToken>();
+    public virtual ICollection<LoginHistory> LoginHistories { get; private set; } = new List<LoginHistory>();
 
     public void SetPassword(byte[] passwordHash)
     {
@@ -74,5 +77,15 @@ public class ApplicationUser : BaseAuditableEntity<int>
     public void ConfirmPhoneNumber()
     {
         PhoneNumberConfirmed = true;
+    }
+    
+    public IEnumerable<string> GetPermissionsList()
+    {
+        return UsersRoles.SelectMany(x => x.Role.RolesPermissionSets)
+            .Select(x => x.PermissionSet)
+            .Distinct()
+            .SelectMany(x => x.PermissionPermissionSet)
+            .Select(x => x.Permission.Name)
+            .Distinct();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using Portfolio.Domain.Core.Domain;
+using Portfolio.Domain.Core.Infrastructure.EntityFramework;
 
 namespace Portfolio.Domain.Core;
 

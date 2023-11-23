@@ -103,8 +103,6 @@ namespace Portfolio.Domain.Core.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     PermissionId = table.Column<int>(type: "integer", nullable: false),
                     PermissionSetId = table.Column<int>(type: "integer", nullable: false),
-                    PermissionSetId1 = table.Column<int>(type: "integer", nullable: false),
-                    PermissionId1 = table.Column<int>(type: "integer", nullable: true),
                     Deleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<int>(type: "integer", nullable: false),
@@ -115,28 +113,17 @@ namespace Portfolio.Domain.Core.Migrations
                 {
                     table.PrimaryKey("PK_PermissionsPermissionSets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PermissionPermissionSet_Permission",
-                        column: x => x.PermissionId,
-                        principalTable: "Permissions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PermissionSet_PermissionSetId",
+                        name: "FK_PermissionsPermissionSets_PermissionSets_PermissionSetId",
                         column: x => x.PermissionSetId,
                         principalTable: "PermissionSets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PermissionsPermissionSets_PermissionSets_PermissionSetId1",
-                        column: x => x.PermissionSetId1,
-                        principalTable: "PermissionSets",
+                        name: "FK_PermissionsPermissionSets_Permissions_PermissionId",
+                        column: x => x.PermissionId,
+                        principalTable: "Permissions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PermissionsPermissionSets_Permissions_PermissionId1",
-                        column: x => x.PermissionId1,
-                        principalTable: "Permissions",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -157,13 +144,13 @@ namespace Portfolio.Domain.Core.Migrations
                 {
                     table.PrimaryKey("PK_RolesPermissionSets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RolePermissionSet_PermissionSetId",
+                        name: "FK_RolesPermissionSets_PermissionSets_PermissionSetId",
                         column: x => x.PermissionSetId,
                         principalTable: "PermissionSets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RolePermissionSet_RoleId",
+                        name: "FK_RolesPermissionSets_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id",
@@ -177,7 +164,7 @@ namespace Portfolio.Domain.Core.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<int>(type: "integer", nullable: false),
-                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTime(2023, 11, 21, 9, 29, 21, 372, DateTimeKind.Utc).AddTicks(4070)),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTime(2023, 11, 23, 19, 37, 58, 810, DateTimeKind.Utc).AddTicks(8100)),
                     IpAddress = table.Column<string>(type: "text", nullable: false),
                     Location = table.Column<string>(type: "text", nullable: true),
                     Deleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
@@ -186,7 +173,7 @@ namespace Portfolio.Domain.Core.Migrations
                 {
                     table.PrimaryKey("PK_LoginHistory", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_LoginHistory_UserId",
+                        name: "FK_LoginHistory_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -200,9 +187,8 @@ namespace Portfolio.Domain.Core.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<int>(type: "integer", nullable: false),
-                    Token = table.Column<byte[]>(type: "bytea", nullable: false),
+                    TokenValue = table.Column<byte[]>(type: "bytea", nullable: false),
                     ValidTo = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ApplicationUserId = table.Column<int>(type: "integer", nullable: true),
                     Deleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<int>(type: "integer", nullable: false),
@@ -213,16 +199,11 @@ namespace Portfolio.Domain.Core.Migrations
                 {
                     table.PrimaryKey("PK_RefreshTokens", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RefreshToken_UserId",
+                        name: "FK_RefreshTokens_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RefreshTokens_Users_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -243,27 +224,15 @@ namespace Portfolio.Domain.Core.Migrations
                 {
                     table.PrimaryKey("PK_UsersRoles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ApplicationRole_RoleId",
+                        name: "FK_UsersRoles_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ApplicationUser_RoleId",
+                        name: "FK_UsersRoles_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserRole_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserRole_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -296,24 +265,9 @@ namespace Portfolio.Domain.Core.Migrations
                 columns: new[] { "PermissionId", "PermissionSetId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_PermissionsPermissionSets_PermissionId1",
-                table: "PermissionsPermissionSets",
-                column: "PermissionId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_PermissionsPermissionSets_PermissionSetId",
                 table: "PermissionsPermissionSets",
                 column: "PermissionSetId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PermissionsPermissionSets_PermissionSetId1",
-                table: "PermissionsPermissionSets",
-                column: "PermissionSetId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RefreshTokens_ApplicationUserId",
-                table: "RefreshTokens",
-                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_Id",
@@ -324,6 +278,12 @@ namespace Portfolio.Domain.Core.Migrations
                 name: "IX_RefreshTokens_UserId",
                 table: "RefreshTokens",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "RefreshTokens_TokenValue",
+                table: "RefreshTokens",
+                column: "TokenValue",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Roles_Id",

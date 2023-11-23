@@ -71,15 +71,17 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
         builder.Property(u => u.ModifiedAt).IsRequired(false);
         builder.Property(u => u.ModifiedBy).IsRequired(false);
         builder.Property(u => u.Deleted).IsRequired().HasDefaultValue(false);
-
+        
         builder.HasMany(u => u.UsersRoles)
-            .WithOne()
-            .HasForeignKey(ur => ur.UserId)
-            .HasConstraintName("FK_ApplicationUser_RoleId");
+            .WithOne(ur => ur.User)
+            .HasForeignKey(ur => ur.UserId);
         
         builder.HasMany(u => u.RefreshTokens)
-            .WithOne()
-            .HasForeignKey(rf => rf.UserId)
-            .HasConstraintName("FK_ApplicationUser_UserId");
+            .WithOne(rf => rf.User)
+            .HasForeignKey(rf => rf.UserId);
+        
+        builder.HasMany(u => u.LoginHistories)
+            .WithOne(rf => rf.User)
+            .HasForeignKey(rf => rf.UserId);
     }
 }

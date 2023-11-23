@@ -3,13 +3,11 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Portfolio.Domain.Core.Domain;
-using Portfolio.Domain.Core.Domain.Auth.Entities;
+using Portfolio.Domain.Core.Infrastructure.EntityFramework;
 
 namespace Portfolio.Domain.Core;
 
@@ -42,25 +40,7 @@ public static class ConfigureServices
                                 "Server=localhost;Database=PortfolioDev;Port=5433;Username=postgres;Password=postgres;Keepalive=60",
                                 b => b.MigrationsAssembly(typeof(PortfolioDbContext).Assembly.FullName)));
             services.AddScoped<PortfolioDbContextInitializer>();
-
-        // services.AddIdentity<ApplicationUser, ApplicationRole>(opt => 
-        //         {
-        //             opt.Password.RequiredLength = 8;
-        //             opt.Password.RequireDigit = true;
-        //             opt.Password.RequireUppercase = true;
-        //             opt.Password.RequireLowercase = true;
-        //             opt.Password.RequireNonAlphanumeric = true;
-        //
-        //             opt.Lockout.AllowedForNewUsers = true; // default is true
-        //             opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); // default is 5
-        //             opt.Lockout.MaxFailedAccessAttempts = 3; // default is 5
-        //             opt.User.RequireUniqueEmail = true;
-        //             opt.SignIn.RequireConfirmedEmail = true;
-        //             opt.SignIn.RequireConfirmedAccount = true;
-        //         })
-        //         .AddEntityFrameworkStores<PortfolioDbContext>()
-        //         .AddDefaultTokenProviders();
-
+            
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -93,9 +73,7 @@ public static class ConfigureServices
             options.KnownNetworks.Clear();
             options.KnownProxies.Clear();
         });
-
-        // services.AddFluentValidationFromAssembly();
-
+        
         return services;
     }
 }

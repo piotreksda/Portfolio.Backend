@@ -24,10 +24,9 @@ public class ApplicationRoleConfiguration : IEntityTypeConfiguration<Application
         builder.Property(r => r.ModifiedAt).IsRequired(false);
         builder.Property(r => r.ModifiedBy).IsRequired(false);
         builder.Property(r => r.Deleted).IsRequired().HasDefaultValue(false);
-
+        
         builder.HasMany(r => r.UsersRoles)
-            .WithOne()
-            .HasForeignKey(ur => ur.RoleId)
-            .HasConstraintName("FK_ApplicationRole_RoleId");
+            .WithOne(ur => ur.Role)
+            .HasForeignKey(ur => ur.RoleId);
     }
 }

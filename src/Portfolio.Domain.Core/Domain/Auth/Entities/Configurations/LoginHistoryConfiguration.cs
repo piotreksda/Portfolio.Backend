@@ -23,9 +23,7 @@ public class LoginHistoryConfiguration : IEntityTypeConfiguration<LoginHistory>
             .IsRequired(false);
 
         builder.HasOne(lh => lh.User)
-            .WithMany()
-            .HasForeignKey(lh => lh.UserId)
-            .HasConstraintName("FK_LoginHistory_UserId");
-        
+            .WithMany(u => u.LoginHistories)
+            .HasForeignKey(lh => lh.UserId);
     }
 }

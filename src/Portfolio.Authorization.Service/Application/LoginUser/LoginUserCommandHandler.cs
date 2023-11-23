@@ -1,53 +1,79 @@
-﻿using MediatR;
+﻿using System.IdentityModel.Tokens.Jwt;
+using MediatR;
+using Portfolio.Domain.Core.Application.Abstractions;
+using Portfolio.Domain.Core.Domain.Auth.Entities;
+using Portfolio.Domain.Core.Domain.Auth.Entities.ValueObjects;
+using Portfolio.Domain.Core.Domain.Core.Exceptions.NotFoundExceptions;
+using Portfolio.Domain.Core.Domain.Core.Exceptions.UnauthorizedExceptions;
 
 namespace Portfolio.Authorization.Service.Application.LoginUser;
 
 public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginDto>
 {
-    public Task<LoginDto> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    private readonly IUserRepository _userRepository;
+    private readonly IJwtTokenService _jwtTokenService;
+
+    public LoginUserCommandHandler(IUserRepository userRepository, IJwtTokenService jwtTokenService)
     {
-        throw new NotImplementedException();
-        // var user = await _userManager.FindByNameAsync(model.Username);
-        // if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
-        // {
-        //     var claims = new[]
-        //     {
-        //         new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-        //         new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
-        //     };
+        _userRepository = userRepository;
+        _jwtTokenService = jwtTokenService;
+    }
 
-        //     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-        //     var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        //     var token = new JwtSecurityToken(
-        //         _configuration["Jwt:Issuer"],
-        //         _configuration["Jwt:Audience"],
-        //         claims,
-        //         expires: DateTime.Now.AddMinutes(30),
-        //         signingCredentials: creds
-        //     );
+    public async Task<LoginDto> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    {
+        var user = await ValidateUserCredentials(request.LoginModel);
+        var token = await GenerateJwtToken(user);
+        var refreshToken = GenerateRefreshToken(user, request.LoginModel.RememberMe);
+        
+        await UpdateUserWithRefreshToken(user, refreshToken);
+        
+        return BuildLoginDto(user, token, refreshToken);
+    }
 
-        //     return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
-        // }
+    private async Task<ApplicationUser> ValidateUserCredentials(LoginInputModel loginModel)
+    {
+        var user = await _userRepository.GetUserByUserNameOrEmail(loginModel.Login);
+        if (user is null)
+        {
+            throw new UserNotFoundException();
+        }
 
-        // var claims = new[]
-        // {
-        //     new Claim(JwtRegisteredClaimNames.Sub, "1"),
-        //     new Claim(JwtRegisteredClaimNames.UniqueName, "piotreksda"),
-        //     new Claim("LanguageId", "1")
-        // };
+        bool passwordIsValid = Password.VerifyPassword(loginModel.Password, user.PasswordHash);
+        if (!passwordIsValid)
+        {
+            throw new WrongPasswordException();
+        }
 
-        // var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-        // var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        // var token = new JwtSecurityToken(
-        //     _configuration["Jwt:Issuer"],
-        //     _configuration["Jwt:Audience"],
-        //     claims,
-        //     expires: DateTime.Now.AddMinutes(2),
-        //     signingCredentials: creds
-        // );
+        return user;
+    }
 
-        // return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+    private async Task<JwtSecurityToken> GenerateJwtToken(ApplicationUser user)
+    {
+        return await _jwtTokenService.CreateTokenForUser(user);
+    }
 
-        // return BadRequest("Invalid credentials");
+    private Domain.Core.Domain.Auth.Entities.RefreshToken GenerateRefreshToken(ApplicationUser user, bool rememberMe)
+    {
+        DateTime refreshTokenValidTo = rememberMe ? DateTime.UtcNow.AddMonths(2) : DateTime.UtcNow.AddDays(2);
+        RefreshTokenValue refreshTokenValue = RefreshTokenValue.GenerateRefreshTokenValue();
+        
+        return new Domain.Core.Domain.Auth.Entities.RefreshToken(user, refreshTokenValue, refreshTokenValidTo);
+    }
+
+    private async Task UpdateUserWithRefreshToken(ApplicationUser user, Domain.Core.Domain.Auth.Entities.RefreshToken refreshToken)
+    {
+        user.AddRefreshToken(refreshToken);
+        await _userRepository.Update(user);
+    }
+
+    private LoginDto BuildLoginDto(ApplicationUser user, JwtSecurityToken token, Domain.Core.Domain.Auth.Entities.RefreshToken refreshToken)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        return new LoginDto
+        {
+            UserId = user.Id,
+            Token = handler.WriteToken(token),
+            RefreshToken = RefreshTokenValue.ConvertToString(refreshToken.Token.Value),
+        };
     }
 }
