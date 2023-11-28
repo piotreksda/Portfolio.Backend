@@ -16,14 +16,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -f "src/Portfolio.Authorization.Service/Dockerfile" \ 
-        --build-arg DB_HOST=${{ vars.DB_PORT }} \
-        --build-arg DB_NAME=${{ secrets.DB_NAME }} \
-        --build-arg DB_PORT=${{ vars.DB_PORT }} \
-        --build-arg DB_USER=${{ secrets.DB_USER }} \
-        --build-arg DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
-        --build-arg DB_KEEPALIVE=${{ vars.DB_KEEPALIVE }} \
-        -t portfolio-auth-service .
+        docker build -f "src/Portfolio.Authorization.Service/Dockerfile" -t portfolio-auth-service .
 
     - name: Run Docker container
       run: |
@@ -33,3 +26,12 @@ jobs:
 
         # Running the Docker image
         docker run -d --name portfolio-auth-service-container -p 35010:5000 portfolio-auth-service
+
+
+        # \ 
+        # --build-arg DB_HOST=${{ vars.DB_PORT }} \
+        # --build-arg DB_NAME=${{ secrets.DB_NAME }} \
+        # --build-arg DB_PORT=${{ vars.DB_PORT }} \
+        # --build-arg DB_USER=${{ secrets.DB_USER }} \
+        # --build-arg DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+        # --build-arg DB_KEEPALIVE=${{ vars.DB_KEEPALIVE }} \
