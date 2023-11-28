@@ -49,12 +49,12 @@ public class AuthController : ControllerBase
 
         return result;
     }
-    [HttpPost("[controller]/refreshToken")]
-    public async Task<ActionResult<bool>> RefreshToken()
+    [HttpGet("[controller]/refreshToken")]
+    public async Task<ActionResult<string>> RefreshToken(int userId, string refreshToken)
     {
-        RefreshTokenCommand request = new ();
+        RefreshTokenCommand request = new (userId, refreshToken);
 
-        bool result = await _mediator.Send(request);
+        string result = await _mediator.Send(request);
 
         return result;
     }

@@ -18,7 +18,10 @@ public class RefreshTokenValue : ValueObject
     public byte[] Value { get; private set; }
     public override IEnumerable<object> GetAtomicValues()
     {
-        yield return Value;
+        foreach (var byteValue in Value)
+        {
+            yield return byteValue;
+        }
     }
 
     public static RefreshTokenValue GenerateRefreshTokenValue()

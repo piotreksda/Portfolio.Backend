@@ -17,6 +17,10 @@ public class UserRepository : RootRepository<ApplicationUser, int>, IUserReposit
         return await _dbContext.Users
             .Include(x => x.UsersRoles)
                 .ThenInclude(x => x.Role)
+                    .ThenInclude(x => x.RolesPermissionSets)
+                        .ThenInclude(x => x.PermissionSet)
+                            .ThenInclude(x => x.PermissionPermissionSet)
+                                .ThenInclude(x => x.Permission)
             .Include(x => x.RefreshTokens)
             .Include(x => x.LoginHistories)
             .SingleOrDefaultAsync(x => x.Id == id);

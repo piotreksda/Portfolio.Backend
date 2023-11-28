@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Text;
 using Portfolio.Domain.Core.Domain.Auth.Entities.ValueObjects;
 using Portfolio.Domain.Core.Domain.Core.Primitives;
-using Portfolio.Domain.Core.Domain.Entites;
 
 namespace Portfolio.Domain.Core.Domain.Auth.Entities;
 
@@ -87,5 +86,27 @@ public class ApplicationUser : BaseAuditableEntity<int>
             .SelectMany(x => x.PermissionPermissionSet)
             .Select(x => x.Permission.Name)
             .Distinct();
+    }
+
+    public bool CheckIfRefreshTokenIsValid(string refreshToken)
+    {
+        RefreshTokenValue refreshTokenValue = new (Encoding.UTF8.GetBytes(refreshToken));
+        return CheckIfRefreshTokenIsValid(refreshTokenValue);
+    }
+    public bool CheckIfRefreshTokenIsValid(byte[] refreshToken)
+    {
+        RefreshTokenValue refreshTokenValue = new(refreshToken);
+        return CheckIfRefreshTokenIsValid(refreshTokenValue);
+    }
+
+    public bool CheckIfRefreshTokenIsValid(RefreshTokenValue refreshToken)
+    {
+        return RefreshTokens
+            .Any(x => x.ValidTo >= DateTime.UtcNow && refreshToken.Equals(x.Token));
+    }
+
+    public void GenerateNewSecurityStamp()
+    {
+        SecurityStamp = new Guid();
     }
 }

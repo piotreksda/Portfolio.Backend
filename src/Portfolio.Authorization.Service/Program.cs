@@ -66,6 +66,8 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
+app.UseCors("SpecificOrigins");
+
 app.UseAuthentication();
 app.UseAuthorization();
 
