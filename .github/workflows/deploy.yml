@@ -23,8 +23,7 @@ jobs:
         --build-arg DB_USER=${{ secrets.DB_USER }} \
         --build-arg DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
         --build-arg DB_KEEPALIVE=${{ vars.DB_KEEPALIVE }} \
-        -f src/Portfolio.Authorization.Service/Dockerfile \
-        -t portfolio-auth-service .
+        -f src/Portfolio.Authorization.Service/Dockerfile -t portfolio-auth-service .
 
     - name: Run Docker container
       run: |
