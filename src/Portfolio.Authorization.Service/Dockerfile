@@ -23,6 +23,24 @@ COPY --from=build /publish/out .
 COPY --from=build /publish/Portfolio.Migration /Portfolio.Migration
 COPY --from=build /root/.dotnet/corefx/cryptography/x509stores/my/* /root/.dotnet/corefx/cryptography/x509stores/my/
 
+ARG DB_HOST
+ENV DB_HOST=$DB_HOST
+
+ARG DB_NAME
+ENV DB_NAME=$DB_NAME
+
+ARG DB_PORT
+ENV DB_PORT=$DB_PORT
+
+ARG DB_USER
+ENV DB_USER=$DB_USER
+
+ARG DB_PASSWORD
+ENV DB_PASSWORD=$DB_PASSWORD
+
+ARG DB_KEEPALIVE
+ENV DB_KEEPALIVE=$DB_KEEPALIVE
+
 ENV ASPNETCORE_URLS https://*:5000
 
 # Expose the port your application listens on (adjust as needed)

@@ -37,7 +37,8 @@ public static class ConfigureServices
         //connectionStringBuilder.ConnectionString
         services.AddDbContext<PortfolioDbContext>(options =>
                 options.UseNpgsql(
-                                "Server=localhost;Database=PortfolioDev;Port=5433;Username=postgres;Password=postgres;Keepalive=60",
+                                connectionStringBuilder.ConnectionString,
+                                // "Server=localhost;Database=PortfolioDev;Port=5433;Username=postgres;Password=postgres;Keepalive=60",
                                 b => b.MigrationsAssembly(typeof(PortfolioDbContext).Assembly.FullName)));
             services.AddScoped<PortfolioDbContextInitializer>();
             
