@@ -16,14 +16,14 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build \ 
+        docker build -f "src/Portfolio.Authorization.Service/Dockerfile" \ 
         --build-arg DB_HOST=${{ vars.DB_PORT }} \
         --build-arg DB_NAME=${{ secrets.DB_NAME }} \
         --build-arg DB_PORT=${{ vars.DB_PORT }} \
         --build-arg DB_USER=${{ secrets.DB_USER }} \
         --build-arg DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
         --build-arg DB_KEEPALIVE=${{ vars.DB_KEEPALIVE }} \
-        -f "src/Portfolio.Authorization.Service/Dockerfile" -t portfolio-auth-service .
+        -t portfolio-auth-service .
 
     - name: Run Docker container
       run: |
