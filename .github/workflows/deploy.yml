@@ -23,6 +23,7 @@ jobs:
         --build-arg DB_USER=${{ secrets.DB_USER }} \
         --build-arg DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
         --build-arg DB_KEEPALIVE=${{ vars.DB_KEEPALIVE }} \
+        -network=${{ vars.DOCKER_NETWORK}} --ip=${{vars.DOCKER_IP}} \
 
     - name: Run Docker container
       run: |
