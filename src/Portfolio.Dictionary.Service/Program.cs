@@ -37,14 +37,15 @@ builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
 var app = builder.Build();
 
+using var scope = app.Services.CreateScope();
+var initializer = scope.ServiceProvider.GetRequiredService<PortfolioDbContextInitializer>();
+await initializer.InitializeAsync();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseStatusCodePages();
-    using var scope = app.Services.CreateScope();
-    var initializer = scope.ServiceProvider.GetRequiredService<PortfolioDbContextInitializer>();
-    await initializer.InitializeAsync();
     
     app.UseSwagger();
     app.UseSwaggerUI();

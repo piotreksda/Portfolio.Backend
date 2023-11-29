@@ -49,13 +49,14 @@ builder.Services.AddHealthChecks();
 var app = builder.Build();
 app.MapHealthChecks("/healthz");
 
+using var scope = app.Services.CreateScope();
+var initializer = scope.ServiceProvider.GetRequiredService<PortfolioDbContextInitializer>();
+await initializer.InitializeAsync();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseStatusCodePages();
-    using var scope = app.Services.CreateScope();
-    var initializer = scope.ServiceProvider.GetRequiredService<PortfolioDbContextInitializer>();
-    await initializer.InitializeAsync();
 
     app.UseSwagger();
     app.UseSwaggerUI();
