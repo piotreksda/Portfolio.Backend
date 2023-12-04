@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Dictionary.Servic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Architecture.Tests", "..\..\tests\Portfolio.Architecture.Tests\Portfolio.Architecture.Tests.csproj", "{B1261385-2C29-46F3-97AA-94D0BE634DDE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{53297C66-CEDB-4291-90E9-73255F45AE07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorTemplateEngine", "..\..\tools\RazorTemplateEngine\RazorTemplateEngine.csproj", "{5ED7DD03-D023-442B-96FC-4B9D2E1ED33A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +57,10 @@ Global
 		{B1261385-2C29-46F3-97AA-94D0BE634DDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1261385-2C29-46F3-97AA-94D0BE634DDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1261385-2C29-46F3-97AA-94D0BE634DDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5ED7DD03-D023-442B-96FC-4B9D2E1ED33A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ED7DD03-D023-442B-96FC-4B9D2E1ED33A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ED7DD03-D023-442B-96FC-4B9D2E1ED33A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ED7DD03-D023-442B-96FC-4B9D2E1ED33A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,5 +72,7 @@ Global
 		{3A139A29-6F59-4BEC-9D51-1E26FB6F62EE} = {4285E216-BC7B-4609-A923-0671C3A49E9B}
 		{88E91697-2E12-480E-A223-32DAC71723AF} = {4285E216-BC7B-4609-A923-0671C3A49E9B}
 		{B1261385-2C29-46F3-97AA-94D0BE634DDE} = {4285E216-BC7B-4609-A923-0671C3A49E9B}
+		{53297C66-CEDB-4291-90E9-73255F45AE07} = {FB2FFC5C-9B07-4A51-A0E4-CC798736B0B1}
+		{5ED7DD03-D023-442B-96FC-4B9D2E1ED33A} = {53297C66-CEDB-4291-90E9-73255F45AE07}
 	EndGlobalSection
 EndGlobal

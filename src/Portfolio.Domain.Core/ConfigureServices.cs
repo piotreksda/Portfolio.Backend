@@ -1,13 +1,21 @@
 ﻿using System.Data.Common;
+using System.Net;
+using System.Net.Mail;
+using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Portfolio.Domain.Core.Application.Abstractions;
 using Portfolio.Domain.Core.Infrastructure.EntityFramework;
+using Portfolio.Domain.Core.Infrastructure.Services;
+using RazorTemplateEngine;
+using RazorTemplateEngine.Services;
 
 namespace Portfolio.Domain.Core;
 
@@ -37,8 +45,8 @@ public static class ConfigureServices
         //connectionStringBuilder.ConnectionString
         services.AddDbContext<PortfolioDbContext>(options =>
                 options.UseNpgsql(
-                                connectionStringBuilder.ConnectionString,
-                                // "Server=localhost;Database=PortfolioDev;Port=5433;Username=postgres;Password=postgres;Keepalive=60",
+                                // connectionStringBuilder.ConnectionString,
+                                "Server=localhost;Database=PortfolioDev;Port=5433;Username=postgres;Password=postgres;Keepalive=60",
                                 b => b.MigrationsAssembly(typeof(PortfolioDbContext).Assembly.FullName)));
             services.AddScoped<PortfolioDbContextInitializer>();
             
@@ -74,6 +82,30 @@ public static class ConfigureServices
             options.KnownNetworks.Clear();
             options.KnownProxies.Clear();
         });
+
+        services.AddRazorTemplateEngine(configuration);
+        
+        services.AddScoped<IRazorViewToStringRenderer, RazorViewToStringRenderer>();
+        
+        services.AddScoped<ISmtpConfigurationService, SmtpConfigurationService>();
+
+        services.AddScoped<SmtpClient>(serviceProvider =>
+        {
+            var smtpConfigService = serviceProvider.GetRequiredService<ISmtpConfigurationService>();
+            var smtpConfig = smtpConfigService.GetSmtpConfigurationAsync().Result; // Synchronously getting the result here, consider async handling
+
+            var client = new SmtpClient(smtpConfig.Host)
+            {
+                Port = smtpConfig.Port,
+                Credentials = new NetworkCredential(smtpConfig.Username, smtpConfig.Password),
+                EnableSsl = smtpConfig.EnableSsl
+                // ... other configurations like EnableSsl
+            };
+
+            return client;
+        });
+
+        services.AddScoped<IEmailService, EmailService>();
         
         return services;
     }

@@ -4,6 +4,7 @@ public class ExceptionsTranslationsKeys
 {
     public static readonly string DefaultErrorTitle = "defaultError.title";
     public static readonly string DefaultErrorMessage = "defaultError.message";
+    
     public static readonly string BadRequestTitle = "badRequest.title";
     public static readonly string BadRequestMessage = "badRequest.Message";
 
@@ -36,6 +37,15 @@ public class ExceptionsTranslationsKeys
     
     public static readonly string ValidationExceptionTitle = "validationException.title";
     public static readonly string ValidationExceptionMessage = "validationException.message";
+
+    public static readonly string UnableToSendEmailTitle = "unableToSendEmail.title";
+    public static readonly string UnableToSendEmailMessage = "unableToSendEmail.message";
+}
+
+public enum MailTemplates
+{
+    RegistrationConfirmation,
+    TwoFactorAuthentication
 }
 
 public enum TwoFaStrategyTypes

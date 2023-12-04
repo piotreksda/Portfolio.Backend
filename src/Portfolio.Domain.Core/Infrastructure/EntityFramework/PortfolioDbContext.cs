@@ -2,6 +2,7 @@
 using Portfolio.Domain.Core.Application.Abstractions;
 using Portfolio.Domain.Core.Domain.Auth.Entities;
 using Portfolio.Domain.Core.Domain.Auth.Entities.Configurations;
+using Portfolio.Domain.Core.Domain.Core.Entities;
 
 namespace Portfolio.Domain.Core.Infrastructure.EntityFramework;
 
@@ -22,6 +23,8 @@ public class PortfolioDbContext : DbContext
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<RolePermissionSet> RolesPermissionSets { get; set; }
     public DbSet<UserRole> UsersRoles { get; set; }
+    
+    public DbSet<SmtpConfiguration> SmtpConfigurations { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -57,5 +60,6 @@ public class PortfolioDbContext : DbContext
         modelBuilder.Entity<RefreshToken>().HasQueryFilter(x => !x.Deleted);
         modelBuilder.Entity<RolePermissionSet>().HasQueryFilter(x => !x.Deleted);
         modelBuilder.Entity<UserRole>().HasQueryFilter(x => !x.Deleted);
+        modelBuilder.Entity<SmtpConfiguration>().HasQueryFilter(x => !x.Deleted);
     }
 }

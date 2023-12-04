@@ -26,7 +26,7 @@ public class ExceptionHandlingMiddleware : IMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An unhandled exception has occurred while executing the request.");
+            _logger.LogError(ex, $"An unhandled exception has occurred while executing the request.\n{ex.Message}");
             
             await HandleExceptionAsync(context, ex);
         }
@@ -96,6 +96,7 @@ public class ExceptionHandlingMiddleware : IMiddleware
             ForbiddenException => StatusCodes.Status403Forbidden,
             NotFoundException => StatusCodes.Status404NotFound,
             InvalidStateException => StatusCodes.Status409Conflict,
+            PortfolioInternalServerErrorException => StatusCodes.Status500InternalServerError,
             PortfolioApplicationException => StatusCodes.Status400BadRequest,
             _ => StatusCodes.Status500InternalServerError
         };
