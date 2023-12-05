@@ -28,7 +28,6 @@ jobs:
   
   CodeQuality-Raport:
     runs-on: self-hosted
-    # if: github.event_name == 'pull_request' || (github.event_name == 'push' && needs.build.result == 'success')
     needs: build
     permissions:
       id-token: write
