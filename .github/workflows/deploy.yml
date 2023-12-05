@@ -11,7 +11,6 @@ jobs:
   build:
     runs-on: self-hosted
     environment: Staging
-    if: github.event_name == 'push'
 
     steps:
     - name: Checkout code
@@ -29,7 +28,8 @@ jobs:
   
   CodeQuality-Raport:
     runs-on: self-hosted
-    if: github.event_name == 'pull_request' || (github.event_name == 'push' && needs.build.result == 'success')
+    # if: github.event_name == 'pull_request' || (github.event_name == 'push' && needs.build.result == 'success')
+    needs: build
     permissions:
       id-token: write
       contents: read
@@ -55,6 +55,7 @@ jobs:
   deploy:
     runs-on: self-hosted
     needs: CodeQuality-Raport
+    if: github.event_name == 'push'
     environment: Staging
 
     steps:
