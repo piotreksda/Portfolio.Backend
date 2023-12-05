@@ -29,7 +29,7 @@ jobs:
   
   CodeQuality-Raport:
     runs-on: self-hosted
-    needs: build
+    # needs: build
     permissions:
       id-token: write
       contents: read
