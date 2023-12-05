@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Dictionary.Servic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Architecture.Tests", "..\..\tests\Portfolio.Architecture.Tests\Portfolio.Architecture.Tests.csproj", "{B1261385-2C29-46F3-97AA-94D0BE634DDE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{53297C66-CEDB-4291-90E9-73255F45AE07}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "..\..\tools", "{53297C66-CEDB-4291-90E9-73255F45AE07}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorTemplateEngine", "..\..\tools\RazorTemplateEngine\RazorTemplateEngine.csproj", "{5ED7DD03-D023-442B-96FC-4B9D2E1ED33A}"
 EndProject
