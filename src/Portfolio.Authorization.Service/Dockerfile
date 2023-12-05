@@ -7,7 +7,7 @@ WORKDIR /publish
 COPY src/Portfolio.Authorization.Service Portfolio.Authorization.Service
 COPY src/Portfolio.Migration Portfolio.Migration
 COPY src/Portfolio.Domain.Core Portfolio.Domain.Core
-COPY tools/RazorTemplateEngine RazorTemplateEngine
+COPY tools/RazorTemplateEngine tools/RazorTemplateEngine
 
 RUN dotnet publish "./Portfolio.Authorization.Service/Portfolio.Authorization.Service.csproj" -c release -o out
 
