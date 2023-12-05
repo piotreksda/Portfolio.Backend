@@ -11,6 +11,7 @@ jobs:
   build:
     runs-on: self-hosted
     environment: Staging
+    if: github.event_name == 'push'
 
     steps:
     - name: Checkout code
