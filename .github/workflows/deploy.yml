@@ -27,7 +27,7 @@ jobs:
         --build-arg DB_KEEPALIVE=${{ vars.DB_KEEPALIVE }}
   
   CodeQuality-Raport:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: build
     permissions:
       id-token: write
