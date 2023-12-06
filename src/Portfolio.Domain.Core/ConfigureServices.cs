@@ -41,12 +41,10 @@ public static class ConfigureServices
             { "Password", configuration["DB_PASSWORD"] ?? string.Empty },
             { "Keepalive", configuration["DB_KEEPALIVE"] ?? string.Empty }
         };
-        //"Server=localhost;Database=PortfolioDev;Port=5433;Username=postgres;Password=postgres;Keepalive=60"
-        //connectionStringBuilder.ConnectionString
+
         services.AddDbContext<PortfolioDbContext>(options =>
                 options.UseNpgsql(
-                                // connectionStringBuilder.ConnectionString,
-                                "Server=localhost;Database=PortfolioDev;Port=5433;Username=postgres;Password=postgres;Keepalive=60",
+                                connectionStringBuilder.ConnectionString,
                                 b => b.MigrationsAssembly(typeof(PortfolioDbContext).Assembly.FullName)));
             services.AddScoped<PortfolioDbContextInitializer>();
             
