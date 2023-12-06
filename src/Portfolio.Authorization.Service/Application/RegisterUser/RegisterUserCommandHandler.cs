@@ -29,7 +29,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, b
 
         await _emailService.SendEmailAsync(request.RegisterModel.Email, MailTemplates.RegistrationConfirmation, new RegistrationConfirmationModel("Test"));
         
-        //await _userRepository.AddAsync(user);
+        await _userRepository.AddAsync(user);
         
         return true;
     }

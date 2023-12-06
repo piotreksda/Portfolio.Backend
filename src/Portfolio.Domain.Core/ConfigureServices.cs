@@ -90,14 +90,13 @@ public static class ConfigureServices
         services.AddScoped<SmtpClient>(serviceProvider =>
         {
             var smtpConfigService = serviceProvider.GetRequiredService<ISmtpConfigurationService>();
-            var smtpConfig = smtpConfigService.GetSmtpConfigurationAsync().Result; // Synchronously getting the result here, consider async handling
+            var smtpConfig = smtpConfigService.GetSmtpConfigurationAsync().Result;
 
             var client = new SmtpClient(smtpConfig.Host)
             {
                 Port = smtpConfig.Port,
                 Credentials = new NetworkCredential(smtpConfig.Username, smtpConfig.Password),
                 EnableSsl = smtpConfig.EnableSsl
-                // ... other configurations like EnableSsl
             };
 
             return client;
