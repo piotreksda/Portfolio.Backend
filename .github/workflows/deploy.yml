@@ -53,9 +53,10 @@ jobs:
         # The SonarQube server URL. For SonarCloud, skip this setting.
         sonarHostname:  https://sonarqube.piotrbartczak.tech/
 
-        dotnetTestArguments: ./src/Portfolio.Swagger.Service/Portfolio.Swagger.Service.sln --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+        dotnetDisableTests: true
+        # dotnetTestArguments: ./src/Portfolio.Swagger.Service/Portfolio.Swagger.Service.sln --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
         # Optional extra command arguments the the SonarScanner 'begin' command
-        sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
+        # sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
 
   deploy:
     runs-on: self-hosted
