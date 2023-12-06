@@ -48,6 +48,7 @@ jobs:
         sonarProjectKey: piotreksda_Portfolio.Backend_AYw6dqi0Psjv5HmFi5YB
         # The name of the SonarQube project
         sonarProjectName:  Portfolio.Backend
+        dotnetBuildArguments: ./src/Portfolio.Swagger.Service/Portfolio.Swagger.Service.sln
         # The SonarQube server URL. For SonarCloud, skip this setting.
         sonarHostname:  https://sonarqube.piotrbartczak.tech/
 
