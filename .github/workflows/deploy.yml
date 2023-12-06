@@ -48,9 +48,14 @@ jobs:
         sonarProjectKey: piotreksda_Portfolio.Backend_AYw6dqi0Psjv5HmFi5YB
         # The name of the SonarQube project
         sonarProjectName:  Portfolio.Backend
+
         dotnetBuildArguments: ./src/Portfolio.Swagger.Service/Portfolio.Swagger.Service.sln
         # The SonarQube server URL. For SonarCloud, skip this setting.
         sonarHostname:  https://sonarqube.piotrbartczak.tech/
+
+        otnetTestArguments: ./src/Portfolio.Swagger.Service/Portfolio.Swagger.Service.sln --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+        # Optional extra command arguments the the SonarScanner 'begin' command
+        sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
 
   deploy:
     runs-on: self-hosted
