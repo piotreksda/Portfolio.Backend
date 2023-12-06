@@ -4,11 +4,12 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 # Set a working directory in the container
 WORKDIR /publish
 
-COPY src/Portfolio.Authorization.Service Portfolio.Authorization.Service
-COPY src/Portfolio.Migration Portfolio.Migration
-COPY src/Portfolio.Domain.Core Portfolio.Domain.Core
+COPY src/Portfolio.Authorization.Service src/Portfolio.Authorization.Service
+COPY src/Portfolio.Migration src/Portfolio.Migration
+COPY src/Portfolio.Domain.Core src/Portfolio.Domain.Core
+COPY tools/RazorTemplateEngine tools/RazorTemplateEngine
 
-RUN dotnet publish "./Portfolio.Authorization.Service/Portfolio.Authorization.Service.csproj" -c release -o out
+RUN dotnet publish "./src/Portfolio.Authorization.Service/Portfolio.Authorization.Service.csproj" -c release -o out
 
 RUN dotnet dev-certs https
 
@@ -20,7 +21,7 @@ WORKDIR /app
 
 # Copy the published application from the build environment
 COPY --from=build /publish/out .
-COPY --from=build /publish/Portfolio.Migration /Portfolio.Migration
+COPY --from=build /publish/src/Portfolio.Migration /Portfolio.Migration
 COPY --from=build /root/.dotnet/corefx/cryptography/x509stores/my/* /root/.dotnet/corefx/cryptography/x509stores/my/
 
 ARG DB_HOST

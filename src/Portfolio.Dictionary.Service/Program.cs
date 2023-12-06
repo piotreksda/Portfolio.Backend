@@ -41,7 +41,6 @@ using var scope = app.Services.CreateScope();
 var initializer = scope.ServiceProvider.GetRequiredService<PortfolioDbContextInitializer>();
 await initializer.InitializeAsync();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
