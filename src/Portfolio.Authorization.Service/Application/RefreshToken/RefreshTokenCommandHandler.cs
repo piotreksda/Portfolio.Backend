@@ -1,10 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using MediatR;
-using Portfolio.Domain.Core.Application.Abstractions;
-using Portfolio.Domain.Core.Domain.Auth.Entities;
-using Portfolio.Domain.Core.Domain.Auth.Entities.ValueObjects;
-using Portfolio.Domain.Core.Domain.Core.Exceptions.NotFoundExceptions;
+using Portfolio.Shared.Kernel.Application.Abstractions;
+using Portfolio.Shared.Kernel.Domain.Auth.Entities;
+using Portfolio.Shared.Kernel.Domain.Auth.Entities.ValueObjects;
+using Portfolio.Shared.Kernel.Domain.Core.Exceptions.NotFoundExceptions;
 
 namespace Portfolio.Authorization.Service.Application.RefreshToken;
 

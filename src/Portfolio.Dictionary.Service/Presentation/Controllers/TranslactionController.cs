@@ -1,6 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Portfolio.Domain.Core.Domain.Core.Models;
+using Portfolio.Shared.Kernel.Domain.Core.Models;
 
 namespace Portfolio.Dictionary.Service.Presentation.Controllers;
 

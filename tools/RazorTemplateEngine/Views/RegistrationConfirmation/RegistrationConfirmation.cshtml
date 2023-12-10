@@ -1,18 +1,15 @@
+@using RazorTemplateEngine.Abstractions
+@using RazorTemplateEngine.Views.RegistrationConfirmation
 @model RazorTemplateEngine.Views.RegistrationConfirmation.RegistrationConfirmationModel
-
+@inject IEmailTranslationService _emailTranslationService
 @{
-    Layout = null;
+    RegistrationConfirmationTranslationModel translations = await _emailTranslationService.GetRegistrationConfirmationTranslation(@Model.LangId);
+    Layout = "_Layout";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <title>@Model.Subject</title>
-</head>
-<body>
 <div>
-    @Model.Test
+    <p>
+        <h2>@translations.ConfirmEmail</h2>
+    </p>
+    <a href="@Model.Url/token=@Model.Token">@translations.ConfirmEmailButton</a>
 </div>
-</body>
-</html>

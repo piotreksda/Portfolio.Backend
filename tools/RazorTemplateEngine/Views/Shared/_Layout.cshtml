@@ -1,0 +1,18 @@
+@using RazorTemplateEngine.Abstractions
+@using RazorTemplateEngine.Templates.Shared
+@inject IEmailTranslationService _emailTranslationService
+@{
+    EmailViewModel? viewModel = (EmailViewModel)ViewBag.MainLayoutViewModel;
+    LayoutTranslation translations = await _emailTranslationService.GetLayoutTranslation(viewModel.LangId);
+}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>@viewModel.Subject</title>
+    </head>
+    <body>
+        <header>@translations.Header</header>
+        @RenderBody()
+        <footer>@translations.Footer</footer>
+    </body>
+</html>

@@ -4,7 +4,7 @@ using Portfolio.Authorization.Service.Application.LoginUser;
 using Portfolio.Authorization.Service.Application.LogoutUser;
 using Portfolio.Authorization.Service.Application.RefreshToken;
 using Portfolio.Authorization.Service.Application.RegisterUser;
-using Portfolio.Domain.Core.Presentation.Extensions;
+using Portfolio.Shared.Kernel.Presentation.Extensions;
 
 namespace Portfolio.Authorization.Service.Presentation.Controllers;
 

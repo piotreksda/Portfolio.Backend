@@ -1,10 +1,10 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using MediatR;
-using Portfolio.Domain.Core.Application.Abstractions;
-using Portfolio.Domain.Core.Domain.Auth.Entities;
-using Portfolio.Domain.Core.Domain.Auth.Entities.ValueObjects;
-using Portfolio.Domain.Core.Domain.Core.Exceptions.NotFoundExceptions;
-using Portfolio.Domain.Core.Domain.Core.Exceptions.UnauthorizedExceptions;
+using Portfolio.Shared.Kernel.Application.Abstractions;
+using Portfolio.Shared.Kernel.Domain.Auth.Entities;
+using Portfolio.Shared.Kernel.Domain.Auth.Entities.ValueObjects;
+using Portfolio.Shared.Kernel.Domain.Core.Exceptions.NotFoundExceptions;
+using Portfolio.Shared.Kernel.Domain.Core.Exceptions.UnauthorizedExceptions;
 
 namespace Portfolio.Authorization.Service.Application.LoginUser;
 
@@ -52,21 +52,21 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginDt
         return await _jwtTokenService.CreateTokenForUser(user);
     }
 
-    private Domain.Core.Domain.Auth.Entities.RefreshToken GenerateRefreshToken(ApplicationUser user, bool rememberMe)
+    private Shared.Kernel.Domain.Auth.Entities.RefreshToken GenerateRefreshToken(ApplicationUser user, bool rememberMe)
     {
         DateTime refreshTokenValidTo = rememberMe ? DateTime.UtcNow.AddMonths(2) : DateTime.UtcNow.AddDays(2);
         RefreshTokenValue refreshTokenValue = RefreshTokenValue.GenerateRefreshTokenValue();
         
-        return new Domain.Core.Domain.Auth.Entities.RefreshToken(user, refreshTokenValue, refreshTokenValidTo);
+        return new Shared.Kernel.Domain.Auth.Entities.RefreshToken(user, refreshTokenValue, refreshTokenValidTo);
     }
 
-    private async Task UpdateUserWithRefreshToken(ApplicationUser user, Domain.Core.Domain.Auth.Entities.RefreshToken refreshToken)
+    private async Task UpdateUserWithRefreshToken(ApplicationUser user, Shared.Kernel.Domain.Auth.Entities.RefreshToken refreshToken)
     {
         user.AddRefreshToken(refreshToken);
         await _userRepository.Update(user);
     }
 
-    private LoginDto BuildLoginDto(ApplicationUser user, JwtSecurityToken token, Domain.Core.Domain.Auth.Entities.RefreshToken refreshToken)
+    private LoginDto BuildLoginDto(ApplicationUser user, JwtSecurityToken token, Shared.Kernel.Domain.Auth.Entities.RefreshToken refreshToken)
     {
         var handler = new JwtSecurityTokenHandler();
         return new LoginDto

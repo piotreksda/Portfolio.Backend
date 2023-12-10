@@ -1,12 +1,12 @@
-using Portfolio.Domain.Core.Infrastructure.Services;
+using Portfolio.Shared.Kernel.Infrastructure.Services;
 using System.Reflection;
 // using FluentValidation;
 using Microsoft.OpenApi.Models;
-using Portfolio.Domain.Core;
-using Portfolio.Domain.Core.Application.Abstractions;
-using Portfolio.Domain.Core.Infrastructure.Persistance;
-using Portfolio.Domain.Core.Infrastructure.Repositories;
-using Portfolio.Domain.Core.Presentation.PipelineBehaviours;
+using Portfolio.Shared.Kernel;
+using Portfolio.Shared.Kernel.Application.Abstractions;
+using Portfolio.Shared.Kernel.Infrastructure.Persistance;
+using Portfolio.Shared.Kernel.Infrastructure.Repositories;
+using Portfolio.Shared.Kernel.Presentation.PipelineBehaviours;
 
 var builder = WebApplication.CreateBuilder(args);
 
