@@ -17,7 +17,7 @@ namespace Portfolio.Shared.Kernel.Migrations
                 table: "LoginHistory",
                 type: "timestamp with time zone",
                 nullable: false,
-                defaultValue: new DateTime(2023, 12, 10, 12, 19, 25, 980, DateTimeKind.Utc).AddTicks(8300),
+                defaultValueSql: "timezone('utc', now())",
                 oldClrType: typeof(DateTime),
                 oldType: "timestamp with time zone",
                 oldDefaultValue: new DateTime(2023, 12, 4, 22, 14, 1, 891, DateTimeKind.Utc).AddTicks(3800));
@@ -38,13 +38,13 @@ namespace Portfolio.Shared.Kernel.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TranslationType",
+                name: "TranslationTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<int>(type: "integer", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -52,14 +52,15 @@ namespace Portfolio.Shared.Kernel.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TranslationType", x => x.Id);
+                    table.PrimaryKey("PK_TranslationTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Translations",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     TranslationKey = table.Column<string>(type: "text", nullable: false),
                     TranslationContent = table.Column<string>(type: "text", nullable: false),
                     LangId = table.Column<int>(type: "integer", nullable: false),
@@ -80,9 +81,9 @@ namespace Portfolio.Shared.Kernel.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Translations_TranslationType_TranslationTypeId",
+                        name: "FK_Translations_TranslationTypes_TranslationTypeId",
                         column: x => x.TranslationTypeId,
-                        principalTable: "TranslationType",
+                        principalTable: "TranslationTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -105,6 +106,13 @@ namespace Portfolio.Shared.Kernel.Migrations
                 name: "IX_Translations_TranslationTypeId",
                 table: "Translations",
                 column: "TranslationTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TranslationTypes_Name",
+                table: "TranslationTypes",
+                column: "Name",
+                unique: true,
+                filter: "\"Deleted\" = false");
         }
 
         /// <inheritdoc />
@@ -117,7 +125,7 @@ namespace Portfolio.Shared.Kernel.Migrations
                 name: "Languages");
 
             migrationBuilder.DropTable(
-                name: "TranslationType");
+                name: "TranslationTypes");
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "Date",
@@ -127,7 +135,7 @@ namespace Portfolio.Shared.Kernel.Migrations
                 defaultValue: new DateTime(2023, 12, 4, 22, 14, 1, 891, DateTimeKind.Utc).AddTicks(3800),
                 oldClrType: typeof(DateTime),
                 oldType: "timestamp with time zone",
-                oldDefaultValue: new DateTime(2023, 12, 10, 12, 19, 25, 980, DateTimeKind.Utc).AddTicks(8300));
+                oldDefaultValueSql: "timezone('utc', now())");
         }
     }
 }

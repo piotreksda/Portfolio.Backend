@@ -42,6 +42,7 @@ public class EmailTranslationService : IEmailTranslationService
         var result = new RegistrationConfirmationTranslationModel()
         {
             ConfirmEmail = GetTranslationFromDictionary(translations, EmailTranslationsKeys.EmailConfirmationKeys.ConfirmEmail),
+            MainBody = GetTranslationFromDictionary(translations, EmailTranslationsKeys.EmailConfirmationKeys.MainBody),
             ConfirmEmailButton = GetTranslationFromDictionary(translations, EmailTranslationsKeys.EmailConfirmationKeys.ConfirmEmailButton)
         };
         

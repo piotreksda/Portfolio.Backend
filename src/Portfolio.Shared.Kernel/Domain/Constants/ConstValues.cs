@@ -8,7 +8,7 @@ public class ExceptionsTranslationsKeys
     public static readonly string DefaultErrorMessage = "defaultError.message";
     
     public static readonly string BadRequestTitle = "badRequest.title";
-    public static readonly string BadRequestMessage = "badRequest.Message";
+    public static readonly string BadRequestMessage = "badRequest.message";
 
     public static readonly string ForbiddenTitle = "forbidden.title";
     public static readonly string ForbiddenMessage = "forbidden.message";
@@ -29,7 +29,7 @@ public class ExceptionsTranslationsKeys
     public static readonly string NeedReauthMessage = "needReauth.message";
 
     public static readonly string NotFoundTitle = "notFound.title";
-    public static readonly string NotFoundMessage = "notFoundmessage";
+    public static readonly string NotFoundMessage = "notFound.message";
 
     public static readonly string UserNotFoundTitle = "userNotFound.title";
     public static readonly string UserNotFoundMessage = "userNotFound.message";
@@ -60,6 +60,7 @@ public class EmailTranslationsKeys
         private static readonly string EmailConfirmationTranslationsStartWith = $"{EmailTranslationsStartWith}EmailConfirmation_";
 
         public static readonly string ConfirmEmail = $"{EmailConfirmationTranslationsStartWith}ConfirmEmail";
+        public static readonly string MainBody = $"{EmailConfirmationTranslationsStartWith}MainBody";
         public static readonly string ConfirmEmailButton = $"{EmailConfirmationTranslationsStartWith}ConfirmEmailButton";
     }
 }

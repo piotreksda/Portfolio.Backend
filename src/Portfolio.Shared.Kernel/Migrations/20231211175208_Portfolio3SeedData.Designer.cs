@@ -12,8 +12,8 @@ using Portfolio.Shared.Kernel.Infrastructure.EntityFramework;
 namespace Portfolio.Shared.Kernel.Migrations
 {
     [DbContext(typeof(PortfolioDbContext))]
-    [Migration("20231210121926_Portfolio2LanguagesTranslationsTranslationTypesTables")]
-    partial class Portfolio2LanguagesTranslationsTranslationTypesTables
+    [Migration("20231211175208_Portfolio3SeedData")]
+    partial class Portfolio3SeedData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -155,7 +155,7 @@ namespace Portfolio.Shared.Kernel.Migrations
                     b.Property<DateTime>("Date")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2023, 12, 10, 12, 19, 25, 980, DateTimeKind.Utc).AddTicks(8300));
+                        .HasDefaultValueSql("timezone('utc', now())");
 
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
@@ -498,9 +498,11 @@ namespace Portfolio.Shared.Kernel.Migrations
 
             modelBuilder.Entity("Portfolio.Shared.Kernel.Domain.Dictionary.Entities.Translation", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -559,7 +561,9 @@ namespace Portfolio.Shared.Kernel.Migrations
                         .HasColumnType("integer");
 
                     b.Property<bool>("Deleted")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -573,7 +577,11 @@ namespace Portfolio.Shared.Kernel.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TranslationType");
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("\"Deleted\" = false");
+
+                    b.ToTable("TranslationTypes", (string)null);
                 });
 
             modelBuilder.Entity("Portfolio.Shared.Kernel.Domain.Auth.Entities.ApplicationUser", b =>

@@ -52,6 +52,7 @@ public class PortfolioDbContext : DbContext
         modelBuilder.ApplyConfiguration(new RolePermissionSetConfiguration());
         modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
         modelBuilder.ApplyConfiguration(new TranslationConfiguration());
+        modelBuilder.ApplyConfiguration(new TranslationTypeConfiguration());
         modelBuilder.ApplyConfiguration(new LanguageConfiguration());
 
 

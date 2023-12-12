@@ -14,6 +14,12 @@ public class MigrationCsvHelper
     private const string SemiColon = ";";
     private const string Comma = ",";
 
+    public static string CsvToSql(string tableName, string migrationFolderName, string migrationCsvFileName,
+        bool updateOnConflict = true)
+    {
+        string path = GetCsvMigrationDataPath(migrationFolderName, migrationCsvFileName);
+        return CsvToSql(tableName, path, updateOnConflict);
+    }
     public static string CsvToSql(string tableName, string filePath, bool updateOnConflict = true)
     {
         if (!File.Exists(filePath))
@@ -26,6 +32,7 @@ public class MigrationCsvHelper
 
         using var reader = new StreamReader(filePath);
         bool isFirstRow = true;
+        bool isFirstValueSet = true;
         int recordCount = 0;
 
         while (!reader.EndOfStream)
@@ -44,7 +51,7 @@ public class MigrationCsvHelper
             }
             else
             {
-                AppendValues(insertStatement, columns);
+                AppendValues(insertStatement, columns, ref isFirstValueSet);
                 recordCount++;
             }
         }
@@ -83,14 +90,18 @@ public class MigrationCsvHelper
         }
     }
 
-    private static void AppendValues(StringBuilder builder, string[] columns)
+    private static void AppendValues(StringBuilder builder, string[] columns, ref bool isFirstValueSet)
     {
-        if (builder[builder.Length - 1] != '(')
+        if (!isFirstValueSet)
         {
             builder.Append(Comma);
         }
+        else
+        {
+            isFirstValueSet = false;
+        }
 
-        var formattedValues = columns.Select(col => col.Replace("'", "''").Replace(Quote, "").Replace("null", "''")).ToArray();
+        var formattedValues = columns.Select(col => "'" + col.Replace("'", "''").Replace(Quote, "").Replace("null", "''") + "'").ToArray();
         builder.Append("(" + string.Join(Comma, formattedValues) + ")");
     }
 }

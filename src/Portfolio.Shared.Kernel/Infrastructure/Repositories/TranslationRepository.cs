@@ -5,7 +5,7 @@ using Portfolio.Shared.Kernel.Infrastructure.EntityFramework;
 
 namespace Portfolio.Shared.Kernel.Infrastructure.Repositories;
 
-public class TranslationRepository : RootRepository<Translation, Guid>, ITranslationRepository<Translation, Guid>
+public class TranslationRepository : RootRepository<Translation, int>, ITranslationRepository<Translation, int>
 {
     public TranslationRepository(PortfolioDbContext dbContext) : base(dbContext)
     {

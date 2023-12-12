@@ -15,7 +15,7 @@ public class LoginHistoryConfiguration : IEntityTypeConfiguration<LoginHistory>
         builder.Property(u => u.Deleted).IsRequired().HasDefaultValue(false);
         builder.Property(u => u.Date)
             .IsRequired()
-            .HasDefaultValue(DateTime.UtcNow);
+            .HasDefaultValueSql("timezone('utc', now())");
 
         builder.Property(u => u.IpAddress)
             .IsRequired();

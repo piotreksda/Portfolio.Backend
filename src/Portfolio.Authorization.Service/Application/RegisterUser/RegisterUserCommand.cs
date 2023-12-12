@@ -6,10 +6,12 @@ namespace Portfolio.Authorization.Service.Application.RegisterUser;
 public class RegisterUserCommand : IRequest<bool>
 {
     public RegisterInputModel RegisterModel { get; init; }
+    public int LangId { get; init; }
 
-    public RegisterUserCommand(RegisterInputModel registerModel)
+    public RegisterUserCommand(RegisterInputModel registerModel, int langId)
     {
         RegisterModel = registerModel;
+        LangId = langId;
     }
     //
     // public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>

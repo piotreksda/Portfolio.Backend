@@ -34,7 +34,8 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, b
             Token = "randomtokenXD",
             Url = "test.xd",
             UserName = request.RegisterModel.UserName,
-            Subject = "Email confirmation"
+            Subject = "Email confirmation",
+            LangId = request.LangId
             
         });
         

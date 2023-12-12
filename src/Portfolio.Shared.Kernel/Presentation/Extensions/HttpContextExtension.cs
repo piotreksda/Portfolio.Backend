@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 using Portfolio.Shared.Kernel.Domain.Constants;
 
 namespace Portfolio.Shared.Kernel.Presentation.Extensions;
@@ -9,9 +10,10 @@ public static class HttpContextExtension
     {
         int languageId = DefaultSettings.DefaultLangId;
         
-        if (httpContext.Items.TryGetValue("LanguageId", value: out var langIdFromHeaders))
+        if (httpContext.Request.Headers.TryGetValue("LanguageId", value: out StringValues langIdFromHeaders))
         {
-            languageId = (int?)langIdFromHeaders ?? languageId;
+            int? value = Int32.TryParse(langIdFromHeaders, out int langInt) ? langInt : null;
+            languageId = value ?? languageId;
         }
         else
         {
