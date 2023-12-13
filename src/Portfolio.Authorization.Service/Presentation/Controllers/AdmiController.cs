@@ -1,4 +1,7 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Portfolio.Authorization.Service.Application.ConfirmEmail;
+using Portfolio.Authorization.Service.Application.ValidateActionToken;
 using Portfolio.Shared.Kernel.Domain.Constants;
 
 namespace Portfolio.Authorization.Service.Presentation.Controllers;
@@ -7,10 +10,21 @@ namespace Portfolio.Authorization.Service.Presentation.Controllers;
 [ApiController]
 public class AdmiController : ControllerBase
 {
+    private readonly IMediator _mediator;
+
+    public AdmiController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+    
     [HttpPost("[controller]/ConfirmEmail")]
     public async Task<ActionResult<bool>> ConfirmEmail([FromBody] string token)
     {
-        return true;
+        ConfirmEmailCommand request = new ConfirmEmailCommand(token);
+        
+        bool result = await _mediator.Send(request);
+        
+        return result;
     }
     
     [HttpPost("[controller]/ResetPassword")]
@@ -22,7 +36,11 @@ public class AdmiController : ControllerBase
     [HttpGet("[controller]/ValidateActionToken")]
     public async Task<ActionResult<bool>> ValidateActionToken([FromQuery] string token, ActionTokenTypes actionType)
     {
-        return true;
+        ValidateActionTokenQuery request = new ValidateActionTokenQuery(token, actionType);
+        
+        bool result = await _mediator.Send(request);
+        
+        return result;
     }
 
 

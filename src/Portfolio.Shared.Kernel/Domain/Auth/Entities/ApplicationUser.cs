@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Portfolio.Shared.Kernel.Domain.Auth.Entities.ValueObjects;
+using Portfolio.Shared.Kernel.Domain.Core.Entities;
 using Portfolio.Shared.Kernel.Domain.Core.Primitives;
 
 namespace Portfolio.Shared.Kernel.Domain.Auth.Entities;
@@ -37,9 +38,10 @@ public class ApplicationUser : BaseAuditableEntity<int>
 
     public int AccessFailedCount { get; private set; }
 
-    public virtual ICollection<UserRole> UsersRoles { get; private set; } = new List<UserRole>();
-    public virtual ICollection<RefreshToken> RefreshTokens { get; private set; } = new List<RefreshToken>();
-    public virtual ICollection<LoginHistory> LoginHistories { get; private set; } = new List<LoginHistory>();
+    public virtual ICollection<UserRole> UsersRoles { get; private set; } = new HashSet<UserRole>();
+    public virtual ICollection<RefreshToken> RefreshTokens { get; private set; } = new HashSet<RefreshToken>();
+    public virtual ICollection<LoginHistory> LoginHistories { get; private set; } = new HashSet<LoginHistory>();
+    public virtual ICollection<ActionToken> ActionTokens { get; private set; } = new HashSet<ActionToken>();
 
     public void SetPassword(byte[] passwordHash)
     {
@@ -76,6 +78,11 @@ public class ApplicationUser : BaseAuditableEntity<int>
     public void ConfirmPhoneNumber()
     {
         PhoneNumberConfirmed = true;
+    }
+    
+    public void ConfirmEmail()
+    {
+        EmailConfirmed = true;
     }
     
     public IEnumerable<string> GetPermissionsList()

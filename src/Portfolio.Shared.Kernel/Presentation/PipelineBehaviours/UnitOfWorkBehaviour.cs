@@ -1,3 +1,4 @@
+using System.Transactions;
 using MediatR;
 using Portfolio.Shared.Kernel.Application.Abstractions;
 
@@ -14,16 +15,34 @@ public sealed class UnitOfWorkBehaviour<TRequest, TResponse> : IPipelineBehavior
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        if (IsNotCommand() || SkipSaving())
+        if (IsNotCommand() || SkipSaving(request))
         {
             return await next();
         }
 
-        TResponse response = await next();
+        if (CheckIfShouldUseTransactionScope(request))
+        {
+            using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                TResponse response = await next();
+
+                await _unitOfWork.CommitAsync(cancellationToken);
+                
+                transactionScope.Complete();
+            
+                return response;
+            }
+        }
+        
+        TResponse responseUOW = await next();
 
         await _unitOfWork.CommitAsync(cancellationToken);
+        
+        return responseUOW;
+        
+        
 
-        return response;
+        
 
     }
 
@@ -32,8 +51,13 @@ public sealed class UnitOfWorkBehaviour<TRequest, TResponse> : IPipelineBehavior
         return !typeof(TRequest).Name.EndsWith("Command");
     }
 
-    private static bool SkipSaving()
+    private static bool SkipSaving(TRequest request)
     {
-        return typeof(TRequest) is SkipSavingAfterCommand;
+        return request is SkipSavingAfterCommand;
+    }
+
+    private static bool CheckIfShouldUseTransactionScope(TRequest request)
+    {
+        return request is UseTransactionScopeSaveLogic;
     }
 }

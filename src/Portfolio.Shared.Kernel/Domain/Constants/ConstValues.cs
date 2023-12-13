@@ -34,6 +34,9 @@ public class ExceptionsTranslationsKeys
     public static readonly string UserNotFoundTitle = "userNotFound.title";
     public static readonly string UserNotFoundMessage = "userNotFound.message";
 
+    public static readonly string UserNameAlreadyTakenMessage = "userNameAlreadyTaken.message";
+    public static readonly string EmailNameAlreadyTakenMessage = "emailNameAlreadyTaken.message";
+    public static readonly string EmailOriginLinkWasNotFoundMessage = "emailOriginLinkWasNotFound.message";
 
     public static readonly string ValidationLanguageNotExist = "validationLanguageNotExist";
     
@@ -42,6 +45,9 @@ public class ExceptionsTranslationsKeys
 
     public static readonly string UnableToSendEmailTitle = "unableToSendEmail.title";
     public static readonly string UnableToSendEmailMessage = "unableToSendEmail.message";
+
+    public static readonly string ActionTokenAlreadyUsedMessage = "actionTokenAlreadyUsed.message";
+    public static readonly string ActionTokenInvalidTypeMessage = "actionTokenInvalidType.message";
 }
 
 public class EmailTranslationsKeys
@@ -63,6 +69,13 @@ public class EmailTranslationsKeys
         public static readonly string MainBody = $"{EmailConfirmationTranslationsStartWith}MainBody";
         public static readonly string ConfirmEmailButton = $"{EmailConfirmationTranslationsStartWith}ConfirmEmailButton";
     }
+}
+
+public class HeadersKeys
+{
+    public static readonly string MailOriginLink = "MailOriginLink";
+    public static readonly string Authorization = "Authorization";
+    public static readonly string LanguageId = "LanguageId";
 }
 
 public enum ActionTokenTypes
@@ -95,6 +108,8 @@ public class ClaimsTypes
 {
     public static readonly string UserIdClaim = "UserId";
     public static readonly string PermissionListClaim = "Permissions";
+    public static readonly string ActionToken = "ActionToken";
+    public static readonly string ActionTokenType = "ActionTokenType";
 }
 
 public class DefaultSettings

@@ -31,6 +31,8 @@ builder.Services.AddSwaggerGen(
 builder.Services.AddScoped<IIdentityContext, IdentityContext>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IActionTokenRepository, ActionTokenRepository>();
+builder.Services.AddTransient<IActionTokenService, ActionTokenService>();
 
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 builder.Services.AddTransient<AddIdentityContextMiddleware>();

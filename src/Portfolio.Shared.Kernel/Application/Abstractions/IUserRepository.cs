@@ -7,5 +7,6 @@ public interface IUserRepository : IRootRepository<ApplicationUser, int>
 {
     Task<bool> CheckIfEmailIsUsed(Email email);
     Task<bool> CheckIfUserNameIsUsed(string userName);
+    Task<bool> CheckIfUserNameOrEmailIsUsed(Email email, string userName);
     Task<ApplicationUser?> GetUserByUserNameOrEmail(string value);
 }

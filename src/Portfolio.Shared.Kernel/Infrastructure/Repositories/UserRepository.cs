@@ -37,6 +37,11 @@ public class UserRepository : RootRepository<ApplicationUser, int>, IUserReposit
         return _dbContext.Users.Any(x => x.UserName == userName);
     }
 
+    public async Task<bool> CheckIfUserNameOrEmailIsUsed(Email email, string userName)
+    {
+        return await _dbContext.Users.AnyAsync(x => x.UserName == userName || x.Email.Value == email);
+    }
+
     public async Task<ApplicationUser?> GetUserByUserNameOrEmail(string value)
     {
         return await _dbContext.Users

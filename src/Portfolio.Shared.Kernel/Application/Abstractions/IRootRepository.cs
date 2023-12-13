@@ -11,4 +11,5 @@ public interface IRootRepository<T, in T2> where T : BaseEntity<T2> where T2 : s
     Task Remove(T entity);
     Task Update(T entity);
     Task Update(IEnumerable<T> entities);
+    public Task SaveChangesAsync();
 }

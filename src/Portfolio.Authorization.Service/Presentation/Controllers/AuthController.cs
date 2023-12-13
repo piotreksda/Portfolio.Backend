@@ -43,7 +43,7 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<bool>> Register([FromBody] RegisterInputModel registerModel)
     {
         
-        RegisterUserCommand request = new (registerModel, HttpContext.GetLanguageId());
+        RegisterUserCommand request = new (registerModel, HttpContext.GetLanguageId(), HttpContext.GetEmailOriginLink());
 
         bool result = await _mediator.Send(request);
 

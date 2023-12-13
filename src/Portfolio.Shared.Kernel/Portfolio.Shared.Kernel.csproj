@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Domain\Abstractions\" />
-    <Folder Include="Infrastructure\Services\Interfaces\" />
     <Folder Include="Migrations/" />
     <Folder Include="Presentation\" />
   </ItemGroup>

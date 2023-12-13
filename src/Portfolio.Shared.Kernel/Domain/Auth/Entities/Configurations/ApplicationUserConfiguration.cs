@@ -83,5 +83,9 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
         builder.HasMany(u => u.LoginHistories)
             .WithOne(rf => rf.User)
             .HasForeignKey(rf => rf.UserId);
+        
+        builder.HasMany(u => u.ActionTokens)
+            .WithOne(ur => ur.User)
+            .HasForeignKey(ur => ur.UserId);
     }
 }

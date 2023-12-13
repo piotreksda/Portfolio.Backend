@@ -71,18 +71,38 @@ public class JwtTokenService : IJwtTokenService
     }
     
 
-    public async Task<IEnumerable<Claim>> CheckIfTokenIsValidAndReturnCalms(string token)
+    public async Task<IEnumerable<Claim>> CheckIfTokenIsValidAndReturnCalms(string token, string? key = null)
     {
-        // string defaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        // AuthenticateResult authenticationResult = await _authenticationService.AuthenticateAsync(new DefaultHttpContext(), defaultAuthenticateScheme);
-        //
-        // if (!authenticationResult.Succeeded)
-        // {
-        //     throw GetAuthenticationException(authenticationResult.Failure);
-        // }
-        //
-        // return authenticationResult.Principal.Claims;
-        return null;
+        if (key is null)
+        {
+            key = _configuration["Jwt:Key"];
+        }
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var validationParameters = GetValidationParameters(key);
+
+        try
+        {
+            tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
+            var jwtToken = validatedToken as JwtSecurityToken;
+            return jwtToken?.Claims;
+        }
+        
+        catch (Exception)
+        {
+            throw new TokenValidationException();
+        }
+    }
+    
+    private static TokenValidationParameters GetValidationParameters(string key)
+    {
+        return new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+        };
     }
 
     private Exception GetAuthenticationException(Exception? exception)

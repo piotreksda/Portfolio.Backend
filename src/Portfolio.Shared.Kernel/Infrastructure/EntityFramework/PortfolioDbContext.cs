@@ -3,6 +3,7 @@ using Portfolio.Shared.Kernel.Application.Abstractions;
 using Portfolio.Shared.Kernel.Domain.Auth.Entities;
 using Portfolio.Shared.Kernel.Domain.Auth.Entities.Configurations;
 using Portfolio.Shared.Kernel.Domain.Core.Entities;
+using Portfolio.Shared.Kernel.Domain.Core.Entities.Configurations;
 using Portfolio.Shared.Kernel.Domain.Dictionary.Entities;
 using Portfolio.Shared.Kernel.Domain.Dictionary.Entities.Configurations;
 
@@ -25,6 +26,7 @@ public class PortfolioDbContext : DbContext
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<RolePermissionSet> RolesPermissionSets { get; set; }
     public DbSet<UserRole> UsersRoles { get; set; }
+    public DbSet<ActionToken> ActionTokens { get; set; }
     
     public DbSet<SmtpConfiguration> SmtpConfigurations { get; set; }
     
@@ -54,7 +56,7 @@ public class PortfolioDbContext : DbContext
         modelBuilder.ApplyConfiguration(new TranslationConfiguration());
         modelBuilder.ApplyConfiguration(new TranslationTypeConfiguration());
         modelBuilder.ApplyConfiguration(new LanguageConfiguration());
-
+        modelBuilder.ApplyConfiguration(new ActionTokenConfiguration());
 
 
         modelBuilder.Entity<ApplicationUser>().HasQueryFilter(x => !x.Deleted);
@@ -71,5 +73,6 @@ public class PortfolioDbContext : DbContext
         modelBuilder.Entity<SmtpConfiguration>().HasQueryFilter(x => !x.Deleted);
         modelBuilder.Entity<Translation>().HasQueryFilter(x => !x.Deleted);
         modelBuilder.Entity<Language>().HasQueryFilter(x => !x.Deleted);
+        modelBuilder.Entity<ActionToken>().HasQueryFilter(x => !x.Deleted);
     }
 }

@@ -413,6 +413,51 @@ namespace Portfolio.Shared.Kernel.Migrations
                     b.ToTable("UsersRoles", (string)null);
                 });
 
+            modelBuilder.Entity("Portfolio.Shared.Kernel.Domain.Core.Entities.ActionToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Deleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("ModifiedBy")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Used")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId", "Token")
+                        .IsUnique();
+
+                    b.ToTable("ActionTokens", (string)null);
+                });
+
             modelBuilder.Entity("Portfolio.Shared.Kernel.Domain.Core.Entities.SmtpConfiguration", b =>
                 {
                     b.Property<int>("Id")
@@ -764,6 +809,17 @@ namespace Portfolio.Shared.Kernel.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Portfolio.Shared.Kernel.Domain.Core.Entities.ActionToken", b =>
+                {
+                    b.HasOne("Portfolio.Shared.Kernel.Domain.Auth.Entities.ApplicationUser", "User")
+                        .WithMany("ActionTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Portfolio.Shared.Kernel.Domain.Dictionary.Entities.Translation", b =>
                 {
                     b.HasOne("Portfolio.Shared.Kernel.Domain.Dictionary.Entities.Language", "Language")
@@ -792,6 +848,8 @@ namespace Portfolio.Shared.Kernel.Migrations
 
             modelBuilder.Entity("Portfolio.Shared.Kernel.Domain.Auth.Entities.ApplicationUser", b =>
                 {
+                    b.Navigation("ActionTokens");
+
                     b.Navigation("LoginHistories");
 
                     b.Navigation("RefreshTokens");

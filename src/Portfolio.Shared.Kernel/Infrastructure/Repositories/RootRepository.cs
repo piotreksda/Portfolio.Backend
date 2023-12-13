@@ -51,4 +51,9 @@ public abstract class RootRepository<T, T2> : IRootRepository<T, T2> where T : B
 
         return Task.CompletedTask;
     }
+
+    public async Task SaveChangesAsync()
+    {
+        await _dbContext.SaveChangesAsync();
+    }
 }
