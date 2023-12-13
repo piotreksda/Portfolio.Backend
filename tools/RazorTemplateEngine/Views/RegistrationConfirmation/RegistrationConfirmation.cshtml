@@ -1,18 +1,38 @@
+@using RazorTemplateEngine.Abstractions
+@using RazorTemplateEngine.Views.RegistrationConfirmation
 @model RazorTemplateEngine.Views.RegistrationConfirmation.RegistrationConfirmationModel
-
+@inject IEmailTranslationService _emailTranslationService
 @{
-    Layout = null;
+    ViewBag.MainLayoutViewModel = @Model;
+    RegistrationConfirmationTranslationModel translations = await _emailTranslationService.GetRegistrationConfirmationTranslation(@Model.LangId);
+    Layout = "_Layout";
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <title>@Model.Subject</title>
-</head>
-<body>
+<style>
+    .yellow-box {
+        background-color: #fcd900; /* Yellow background */
+        border-radius: 0 0 10px 10px; /* Rounded bottom corners */
+        padding: 20px;
+        text-align: center;
+    }
+    .button {
+        background-color: #fcd900;
+        color: #000000;
+        padding: 10px 20px;
+        text-decoration: none;
+        border: none;
+        display: inline-block;
+        margin-top: 20px;
+    }
+    .content {
+        padding: 20px;
+        text-align: center;
+    }
+</style>
 <div>
-    @Model.Test
+    <div class="yellow-box"></div>
+    <div class="content">
+        <h1>@translations.ConfirmEmail</h1>
+        <p>@translations.MainBody.Replace("[Name]", @Model.UserName)</p>
+        <a href="@string.Concat(@Model.Url, "?token=", @Model.Token)" class="button">@translations.ConfirmEmailButton</a>
+    </div>
 </div>
-</body>
-</html>

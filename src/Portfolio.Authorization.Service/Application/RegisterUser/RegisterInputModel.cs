@@ -1,4 +1,4 @@
-using Portfolio.Domain.Core.Domain.Auth.Entities.ValueObjects;
+using Portfolio.Shared.Kernel.Domain.Auth.Entities.ValueObjects;
 
 namespace Portfolio.Authorization.Service.Application.RegisterUser;
 

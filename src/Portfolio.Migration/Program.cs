@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Portfolio.Domain.Core;
-using Portfolio.Domain.Core.Application.Abstractions;
-using Portfolio.Domain.Core.Infrastructure.Persistance;
-using Portfolio.Domain.Core.Infrastructure.Services;
+using Portfolio.Shared.Kernel;
+using Portfolio.Shared.Kernel.Application.Abstractions;
+using Portfolio.Shared.Kernel.Infrastructure.Persistance;
+using Portfolio.Shared.Kernel.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddInfrastructureServices(builder.Configuration);

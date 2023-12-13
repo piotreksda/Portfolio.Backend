@@ -4,7 +4,7 @@ using Portfolio.Authorization.Service.Application.LoginUser;
 using Portfolio.Authorization.Service.Application.LogoutUser;
 using Portfolio.Authorization.Service.Application.RefreshToken;
 using Portfolio.Authorization.Service.Application.RegisterUser;
-using Portfolio.Domain.Core.Presentation.Extensions;
+using Portfolio.Shared.Kernel.Presentation.Extensions;
 
 namespace Portfolio.Authorization.Service.Presentation.Controllers;
 
@@ -43,7 +43,7 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<bool>> Register([FromBody] RegisterInputModel registerModel)
     {
         
-        RegisterUserCommand request = new (registerModel);
+        RegisterUserCommand request = new (registerModel, HttpContext.GetLanguageId(), HttpContext.GetEmailOriginLink());
 
         bool result = await _mediator.Send(request);
 

@@ -10,7 +10,7 @@ public static class PortfolioAssemblies
         "Portfolio.Dictionary.Service"
     };
 
-    public static readonly Assembly? DomainCoreAssembly = Type.GetType($"Portfolio.Domain.Core.Infrastructure.Architecture.GetAssembly, Portfolio.Domain.Core")?.Assembly;
+    public static readonly Assembly? DomainCoreAssembly = Type.GetType($"Portfolio.Shared.Kernel.Infrastructure.Architecture.GetAssembly, Portfolio.Shared.Kernel")?.Assembly;
     private static readonly List<Assembly?> MicroservicesAssemblies = ProjectNames.Select(x => Type.GetType($"{x}.Infrastructure.Architecture.GetAssembly, {x}")?.Assembly).ToList();
     
     public static IEnumerable<object[]?> MicroservicesAssemblyData()

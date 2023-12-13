@@ -1,0 +1,65 @@
+@using RazorTemplateEngine.Abstractions
+@using RazorTemplateEngine.Services
+@using RazorTemplateEngine.Templates.Shared
+@inject IEmailTranslationService _emailTranslationService
+@{
+    EmailViewModel? viewModel = (EmailViewModel)ViewBag.MainLayoutViewModel;
+    LayoutTranslation translations = await _emailTranslationService.GetLayoutTranslation(viewModel.LangId);
+}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>@viewModel.Subject</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+          }
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+          }
+          .header {
+            background: #f9f9f9;
+            padding: 10px;
+            display: flex;
+            align-items: end;
+            justify-content: center;
+            gap: 1rem;
+          }
+          .footer {
+            background: #f9f9f9;
+            padding: 10px;
+            text-align: center;
+          }
+          @@media only screen and (max-width: 600px) {
+            .container {
+              width: 100%;
+            }
+          }
+        </style>
+    </head>
+<body>
+    <div class="container">
+        <div class="header">
+          <img src="@FileToHtmlTool.ConvertToBase64Src("Views/Shared/Images/Logo.svg")" alt="Logo" width="40px">
+          <span>@translations.Header</span>
+        </div>
+        
+        @RenderBody()
+        
+        <div class="footer">
+              <p>@translations.Footer</p>
+              <a href="https://www.linkedin.com/in/bartczak-piotr/"><img src="@FileToHtmlTool.ConvertToBase64Src("Views/Shared/Images/LinkedinIcon.svg")" alt="LinkedIn" width="40px"></a>
+              <a href="https://github.com/piotreksda"><img src="@FileToHtmlTool.ConvertToBase64Src("Views/Shared/Images/GithubIcon.svg")" alt="GitHub" width="40px"></a>
+            </div>
+    </div>
+</body>
+</html>

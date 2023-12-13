@@ -13,5 +13,24 @@
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.0" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Views\RegistrationConfirmation\Images\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Views\Shared\Images\Logo.svg" />
+      <Content Include="Views\Shared\Images\Logo.svg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Views\Shared\Images\LinkedinIcon.svg" />
+      <Content Include="Views\Shared\Images\LinkedinIcon.svg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Views\Shared\Images\GithubIcon.svg" />
+      <Content Include="Views\Shared\Images\GithubIcon.svg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
     
 </Project>

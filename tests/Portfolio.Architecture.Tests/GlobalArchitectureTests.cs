@@ -40,9 +40,9 @@ public class GlobalArchitectureTests
                 $"{assembly.GetName().Name}.Application",
                 $"{assembly.GetName().Name}.Infrastructure",
                 $"{assembly.GetName().Name}.Presentation",
-                "Portfolio.Domain.Core.Application",
-                "Portfolio.Domain.Core.Infrastructure",
-                "Portfolio.Domain.Core.Presentation"
+                "Portfolio.Shared.Kernel.Application",
+                "Portfolio.Shared.Kernel.Infrastructure",
+                "Portfolio.Shared.Kernel.Presentation"
             };
         }
 
@@ -78,8 +78,8 @@ public class GlobalArchitectureTests
             {
                 // $"{assembly.GetName().Name}.Application",
                 $"{assembly.GetName().Name}.Presentation",
-                // "Portfolio.Domain.Core.Application",
-                "Portfolio.Domain.Core.Presentation"
+                // "Portfolio.Shared.Kernel.Application",
+                "Portfolio.Shared.Kernel.Presentation"
             };
         }
         
@@ -116,8 +116,8 @@ public class GlobalArchitectureTests
             {
                 $"{assembly.GetName().Name}.Infrastructure",
                 $"{assembly.GetName().Name}.Presentation",
-                "Portfolio.Domain.Core.Infrastructure",
-                "Portfolio.Domain.Core.Presentation"
+                "Portfolio.Shared.Kernel.Infrastructure",
+                "Portfolio.Shared.Kernel.Presentation"
             };
         }
         

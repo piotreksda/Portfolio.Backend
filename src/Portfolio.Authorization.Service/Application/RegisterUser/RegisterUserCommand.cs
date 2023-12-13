@@ -1,15 +1,20 @@
 // using FluentValidation;
 using MediatR;
+using Portfolio.Shared.Kernel.Application.Abstractions;
 
 namespace Portfolio.Authorization.Service.Application.RegisterUser;
 
-public class RegisterUserCommand : IRequest<bool>
+public class RegisterUserCommand : IRequest<bool>, UseTransactionScopeSaveLogic
 {
     public RegisterInputModel RegisterModel { get; init; }
+    public int LangId { get; init; }
+    public string Url { get; init; }
 
-    public RegisterUserCommand(RegisterInputModel registerModel)
+    public RegisterUserCommand(RegisterInputModel registerModel, int langId, string url)
     {
         RegisterModel = registerModel;
+        LangId = langId;
+        Url = url;
     }
     //
     // public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>

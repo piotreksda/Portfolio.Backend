@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Portfolio.Domain.Core\Portfolio.Domain.Core.csproj" />
+    <ProjectReference Include="..\Portfolio.Shared.Kernel\Portfolio.Shared.Kernel.csproj" />
   </ItemGroup>
 
   <ItemGroup>
